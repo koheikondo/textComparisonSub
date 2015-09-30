@@ -57,7 +57,9 @@
     static NSString*CellIdentifier=@"Cell";
     CustomCellTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    cell.titleLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
+    cell.titleLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemName"]];
+    
+    cell.priceLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
     return cell;
     
 }

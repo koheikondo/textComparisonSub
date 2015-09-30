@@ -430,6 +430,7 @@
 				A4A7BF931BBAF20A001DAEA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A4A7BF941BBAF20A001DAEA3 /* Build configuration list for PBXNativeTarget "TextComparitionCustomCell2Tests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +439,7 @@
 				A4A7BF961BBAF20A001DAEA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
