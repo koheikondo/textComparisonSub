@@ -65,18 +65,22 @@
     cell.priceLabel.text=[NSString stringWithFormat:@"%@円",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
     
     //imageを表示
-//    NSArray *myArray= _rakuList[indexPath.row][@"Item"];
-//    NSString *myString =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
+    NSArray *myArray= _rakuList[indexPath.row][@"Item"][@"mediumImageUrls"];
+    NSDictionary *myArraysub =myArray[0];
+   // NSDictionary *dic =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
 //    NSLog(@"%@",myString);
 //    NSURL *myURL = [NSURL URLWithString:myString];
-//    
-//    //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
-//   // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
-//    
-//    
-//    NSData *myData=[NSData dataWithContentsOfURL:myURL];
-//    UIImage *myImage=[UIImage imageWithData:myData];
-//    cell.cellImageVIew.image=myImage;
+    
+    
+    NSURL *myURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]]];
+    
+    //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
+   // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
+    NSLog(@"%@",myURL);
+    
+    NSData *myData=[NSData dataWithContentsOfURL:myURL];
+    UIImage *myImage=[UIImage imageWithData:myData];
+    cell.cellImageVIew.image=myImage;
     
     
     return cell;
