@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "CustomCellTableViewCell.h"
+#import "DetailTableViewCell.h"
 
 @interface ViewController (){
     NSArray *_rakuList;
@@ -93,6 +94,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+//セルが押された時の処理
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    DetailTableViewCell*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+    
+    [[self navigationController]pushViewController:dvc animated:YES];
+}
+
+//検索した時の処理
 - (IBAction)textInputEnd:(id)sender {
     
     NSString *name=[NSString stringWithFormat:@"%@",self.inputTextField.text];
@@ -123,4 +132,6 @@
     [self.myTableVIew reloadData];
     NSLog(@"リロード完了");
 }
+
+
 @end

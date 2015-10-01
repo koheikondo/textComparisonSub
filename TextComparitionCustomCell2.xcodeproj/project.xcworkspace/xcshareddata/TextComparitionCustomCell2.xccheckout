@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>C4FE8C9C-DF2E-4606-B174-35242910DC81</string>
 	<key>IDESourceControlProjectName</key>
-	<string>TextComparitionCustomCell2</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>4D6400DEFED5D2415C59BA04BB2CC65985BAF491</key>
 		<string>https://github.com/koheikondo/textComparisonSub.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>TextComparitionCustomCell2.xcodeproj</string>
+	<string>TextComparitionCustomCell2.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4D6400DEFED5D2415C59BA04BB2CC65985BAF491</key>
