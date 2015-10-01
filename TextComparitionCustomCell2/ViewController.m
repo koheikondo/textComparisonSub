@@ -11,6 +11,7 @@
 
 @interface ViewController (){
     NSArray *_rakuList;
+    
 }
 
 
@@ -35,7 +36,7 @@
     //↓onnectionで通信開始。
     NSData *rakuJson_data=[NSURLConnection sendSynchronousRequest:rakuMyURLReq returningResponse:nil error:nil];
     NSError *rakuerror=nil;
-    NSDictionary *rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
+    NSDictionary* rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
     //&をつけると参照形式になり、その変数は引数にもなり、戻り値にもなる。
     _rakuList=rakujsonObject[@"Items"];
     NSLog(@"%@",_rakuList);
@@ -57,9 +58,27 @@
     static NSString*CellIdentifier=@"Cell";
     CustomCellTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    cell.titleLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemName"]];
+    //商品名を表示
+    cell.textTitleLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemName"]];
     
-    cell.priceLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
+    //値段を表示
+    cell.priceLabel.text=[NSString stringWithFormat:@"%@円",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
+    
+    //imageを表示
+//    NSArray *myArray= _rakuList[indexPath.row][@"Item"];
+//    NSString *myString =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
+//    NSLog(@"%@",myString);
+//    NSURL *myURL = [NSURL URLWithString:myString];
+//    
+//    //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
+//   // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
+//    
+//    
+//    NSData *myData=[NSData dataWithContentsOfURL:myURL];
+//    UIImage *myImage=[UIImage imageWithData:myData];
+//    cell.cellImageVIew.image=myImage;
+    
+    
     return cell;
     
 }
