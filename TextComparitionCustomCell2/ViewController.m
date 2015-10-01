@@ -67,16 +67,18 @@
     //imageを表示
     NSArray *myArray= _rakuList[indexPath.row][@"Item"][@"mediumImageUrls"];
     NSDictionary *myArraysub =myArray[0];
-   // NSDictionary *dic =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
-//    NSLog(@"%@",myString);
-//    NSURL *myURL = [NSURL URLWithString:myString];
     
+    
+   // NSDictionary *dic =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
+// NSLog(@"%@",myString);
+// NSURL *myURL = [NSURL URLWithString:myString];
+    //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
+    // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
+
     
     NSURL *myURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]]];
     
-    //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
-   // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
-    NSLog(@"%@",myURL);
+       NSLog(@"%@",myURL);
     
     NSData *myData=[NSData dataWithContentsOfURL:myURL];
     UIImage *myImage=[UIImage imageWithData:myData];
@@ -91,4 +93,6 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)textInputEnd:(id)sender {
+}
 @end

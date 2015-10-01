@@ -12,7 +12,9 @@
     NSArray * _textExplanation;
 }
 @property (weak, nonatomic) IBOutlet UITableView *myTableVIew;
+@property (weak, nonatomic) IBOutlet UITextField *inputTextField;
 
+- (IBAction)textInputEnd:(id)sender;
 
 @end
 
