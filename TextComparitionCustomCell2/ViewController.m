@@ -8,7 +8,8 @@
 
 #import "ViewController.h"
 #import "CustomCellTableViewCell.h"
-#import "DetailTableViewCell.h"
+//#import "DetailTableViewCell.h"
+#import "DetailViewController.h"
 
 @interface ViewController (){
     NSArray *_rakuList;
@@ -96,7 +97,11 @@
 
 //セルが押された時の処理
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-    DetailTableViewCell*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+    DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+   
+    
+    dvc.toURL=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]];
+    
     
     [[self navigationController]pushViewController:dvc animated:YES];
 }

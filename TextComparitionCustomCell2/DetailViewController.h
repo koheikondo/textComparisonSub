@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailViewController : UIViewController
-
+@property (weak, nonatomic) IBOutlet UIWebView *myWebView;
+@property (nonatomic,assign) int selectNum;
+@property (nonatomic,assign) NSString *toURL;
 @end

@@ -16,7 +16,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    NSURL *myURL =[NSURL URLWithString:self.toURL];
+    NSURLRequest *myURLReq =[NSURLRequest requestWithURL:myURL];
+    [self.myWebView loadRequest:myURLReq];
+    
 }
 
 - (void)didReceiveMemoryWarning {
