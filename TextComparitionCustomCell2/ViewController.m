@@ -25,10 +25,14 @@
     [super viewDidLoad];
     self.myTableVIew.dataSource=self;
     self.myTableVIew.delegate=self;
+    //navigationControllerの名前
+    self.title=@"安い順にでるよ！";
+    
+    
     _textExplanation=@[@"あ",@"ああ",@"あああ"];
    
-    //楽天のAPI
-    NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=c%E8%A8%80%E8%AA%9E&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+    //楽天のAPI c%E8%A8%80%E8%AA%9E
+    NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
     
     //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
 
