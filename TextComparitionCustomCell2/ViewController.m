@@ -161,7 +161,7 @@
                      animations:^{
                          // アニメーションをする処理
                          _sideMenuView.frame = CGRectMake(self.view.frame.size.width-sideMenuFrame.size.width,
-                                                          sideMenuFrame.origin.y,
+                                                          self.navigationController.navigationBar.frame.size.height,
                                                           sideMenuFrame.size.width,
                                                           sideMenuFrame.size.height);
                      } completion:^(BOOL finished) {
