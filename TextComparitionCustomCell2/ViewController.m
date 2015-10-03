@@ -8,11 +8,13 @@
 
 #import "ViewController.h"
 #import "CustomCellTableViewCell.h"
-//#import "DetailTableViewCell.h"
+#import "RightSlideMenuView.h"
 #import "DetailViewController.h"
 
 @interface ViewController (){
     NSArray *_rakuList;
+    RightSlideMenuView *_sideMenuView;
+    UIView *_viewForClosingSideMenu;
     
 }
 
@@ -23,15 +25,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.myTableVIew.dataSource=self;
     self.myTableVIew.delegate=self;
+    
+    
     //navigationControllerの名前
     self.title=@"安い順にでるよ！";
     //navigationControllerの右側の設定
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:nil];
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
     
+    _sideMenuView =[[RightSlideMenuView alloc]initWithFrame:self.view.frame];
+    [self.view addSubview:_sideMenuView];
     
-    _textExplanation=@[@"あ",@"ああ",@"あああ"];
+   // _textExplanation=@[@"あ",@"ああ",@"あああ"];
    
     //楽天のAPI c%E8%A8%80%E8%AA%9E
     NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
@@ -142,6 +149,67 @@
     //テーブルビューをリロード
     [self.myTableVIew reloadData];
     NSLog(@"リロード完了");
+}
+
+//ブックマークを右側から表示
+-(void)rightBookMark{
+    // show side menu with animation
+    CGRect sideMenuFrame = _sideMenuView.frame;
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         // アニメーションをする処理
+                         _sideMenuView.frame = CGRectMake(self.view.frame.size.width-sideMenuFrame.size.width,
+                                                          sideMenuFrame.origin.y,
+                                                          sideMenuFrame.size.width,
+                                                          sideMenuFrame.size.height);
+                     } completion:^(BOOL finished) {
+                         // アニメーションが終わった後実行する処理
+                     }];
+    
+    // メニュー外をタップしたら、メニューを閉じるようにする
+    // そのためのUIViewをメニュー外に設置し、これをタップしたらメニューを閉じるようにする
+    if (!_viewForClosingSideMenu)
+    {
+        _viewForClosingSideMenu = [[UIView alloc] initWithFrame:
+                                   CGRectMake(0,
+                                              0,
+                                              self.view.frame.size.width
+                                              -sideMenuFrame.size.width,
+                                              self.view.frame.size.height)];
+        _viewForClosingSideMenu.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer *closeSideMenuTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(closeSideMenu:)];
+        [_viewForClosingSideMenu addGestureRecognizer:closeSideMenuTap];
+        [self.view addSubview: _viewForClosingSideMenu];
+    }
+}
+
+-(void)closeSideMenu:(int)destination
+{
+    CGRect sideMenuFrame = _sideMenuView.frame;
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         // アニメーションをする処理
+//                         _sideMenuView.frame = CGRectMake(outsideSideMenuX,
+//                                                          sideMenuFrame.origin.y,
+//                                                          sideMenuFrame.size.width,
+//                                                          sideMenuFrame.size.height);
+                         _sideMenuView.frame=CGRectMake(self.view.frame.size.width, sideMenuFrame.origin.y, sideMenuFrame.size.width, sideMenuFrame.size.height);
+                     } completion:^(BOOL finished) {
+                         // アニメーションが終わった後実行する処理
+                     }];
+    
+    // メニューを閉じるためのUIViewを削除
+    if (_viewForClosingSideMenu)
+    {
+        [_viewForClosingSideMenu removeFromSuperview];
+        _viewForClosingSideMenu= nil;
+    }
 }
 
 
