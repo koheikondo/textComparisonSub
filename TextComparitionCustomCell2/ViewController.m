@@ -15,6 +15,7 @@
     NSArray *_rakuList;
     RightSlideMenuView *_sideMenuView;
     UIView *_viewForClosingSideMenu;
+    BOOL _flg;
     
 }
 
@@ -25,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _flg=NO;
     
     self.myTableVIew.dataSource=self;
     self.myTableVIew.delegate=self;
@@ -153,6 +155,10 @@
 
 //ブックマークを右側から表示
 -(void)rightBookMark{
+    
+    if(_flg){
+        [self closeSideMenu:0];
+    }else{
     // show side menu with animation
     CGRect sideMenuFrame = _sideMenuView.frame;
     [UIView animateWithDuration:0.3f
@@ -167,7 +173,8 @@
                      } completion:^(BOOL finished) {
                          // アニメーションが終わった後実行する処理
                      }];
-    
+        _flg=YES;
+        
     // メニュー外をタップしたら、メニューを閉じるようにする
     // そのためのUIViewをメニュー外に設置し、これをタップしたらメニューを閉じるようにする
     if (!_viewForClosingSideMenu)
@@ -184,6 +191,7 @@
                                                 action:@selector(closeSideMenu:)];
         [_viewForClosingSideMenu addGestureRecognizer:closeSideMenuTap];
         [self.view addSubview: _viewForClosingSideMenu];
+        }
     }
 }
 
@@ -210,6 +218,7 @@
         [_viewForClosingSideMenu removeFromSuperview];
         _viewForClosingSideMenu= nil;
     }
+    _flg=NO;
 }
 
 
