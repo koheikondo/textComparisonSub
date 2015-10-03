@@ -27,6 +27,8 @@
     self.myTableVIew.delegate=self;
     //navigationControllerの名前
     self.title=@"安い順にでるよ！";
+    //navigationControllerの右側の設定
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:nil];
     
     
     _textExplanation=@[@"あ",@"ああ",@"あああ"];
