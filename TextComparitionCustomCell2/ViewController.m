@@ -30,17 +30,23 @@
     
     self.myTableVIew.dataSource=self;
     self.myTableVIew.delegate=self;
-    
+    self.myTableVIew.tag = 1;
     
     //navigationControllerの名前
     self.title=@"安い順にでるよ！";
     //navigationControllerの右側の設定
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
     
-    _sideMenuView =[[RightSlideMenuView alloc]initWithFrame:self.view.frame];
+    UITableView *bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
+    bookMarktable.delegate = self;
+    bookMarktable.dataSource = self;
+    bookMarktable.tag = 2;
+    
+    _sideMenuView = (RightSlideMenuView *)bookMarktable;
+    
     [self.view addSubview:_sideMenuView];
     
-   // _textExplanation=@[@"あ",@"ああ",@"あああ"];
+    _textExplanation=@[@"あ",@"ああ",@"あああ"];
    
     //楽天のAPI c%E8%A8%80%E8%AA%9E
     NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
@@ -68,10 +74,16 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(tableView.tag==1){
     return _rakuList.count;
+    }else{
+        //ブックマークテーブルの行数を返す。
+    return _textExplanation.count;
+    }
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView.tag==1){
     static NSString*CellIdentifier=@"Cell";
     CustomCellTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -99,12 +111,27 @@
     
     NSData *myData=[NSData dataWithContentsOfURL:myURL];
     UIImage *myImage=[UIImage imageWithData:myData];
+    
+    
     cell.cellImageVIew.image=myImage;
-    
-    
-    return cell;
-    
+        
+        return cell;
+    }else{
+        static NSString *cellIdentifier =@"Cell";
+        UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        
+        
+        if(cell==nil){
+            cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+           
+            
+            
+        }
+         cell.textLabel.text=_textExplanation[indexPath.row];
+        return cell;
+    }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -112,6 +139,7 @@
 
 //セルが押された時の処理
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView.tag==1){
     DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
    
     
@@ -119,6 +147,9 @@
     
     
     [[self navigationController]pushViewController:dvc animated:YES];
+    }else{
+        //bookmarkの中身を書く
+    }
 }
 
 //検索した時の処理
@@ -167,7 +198,7 @@
                      animations:^{
                          // アニメーションをする処理
                          _sideMenuView.frame = CGRectMake(self.view.frame.size.width-sideMenuFrame.size.width,
-                                                          self.navigationController.navigationBar.frame.size.height,
+                                                          self.navigationController.navigationBar.frame.size.height+19,
                                                           sideMenuFrame.size.width,
                                                           sideMenuFrame.size.height);
                      } completion:^(BOOL finished) {
