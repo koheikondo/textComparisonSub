@@ -11,6 +11,7 @@
 @implementation RightSlideMenuView
 
 
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -19,11 +20,11 @@
         self.frame = CGRectMake( [UIScreen mainScreen].bounds.size.width, 0, 160, 568);
         //self.frame = CGRectMake( 0, 0, 160, 568);
         self.backgroundColor = [UIColor blueColor];
-        UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(30, 100, 100, 100)];
-        title.text = @"スライドメニューが表示されました";
-        title.backgroundColor = [UIColor clearColor];
+     
     }
     return self;
 }
+
+
 
 @end
