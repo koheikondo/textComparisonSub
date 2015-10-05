@@ -198,7 +198,7 @@
                      animations:^{
                          // アニメーションをする処理
                          _sideMenuView.frame = CGRectMake(self.view.frame.size.width-sideMenuFrame.size.width,
-                                                          self.navigationController.navigationBar.frame.size.height+19,
+                                                          self.navigationController.navigationBar.frame.size.height+20,
                                                           sideMenuFrame.size.width,
                                                           sideMenuFrame.size.height);
                      } completion:^(BOOL finished) {
@@ -238,7 +238,7 @@
 //                                                          sideMenuFrame.origin.y,
 //                                                          sideMenuFrame.size.width,
 //                                                          sideMenuFrame.size.height);
-                         _sideMenuView.frame=CGRectMake(self.view.frame.size.width, sideMenuFrame.origin.y, sideMenuFrame.size.width, sideMenuFrame.size.height);
+                         _sideMenuView.frame=CGRectMake(self.view.frame.size.width, sideMenuFrame.origin.y-50, sideMenuFrame.size.width, sideMenuFrame.size.height);
                      } completion:^(BOOL finished) {
                          // アニメーションが終わった後実行する処理
                      }];
