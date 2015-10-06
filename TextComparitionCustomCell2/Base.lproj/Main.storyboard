@@ -17,15 +17,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="教科書名を入力" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u9m-AP-aLK">
-                                <rect key="frame" x="15" y="72" width="281" height="30"/>
+                                <rect key="frame" x="15" y="78" width="281" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                 <connections>
                                     <action selector="textInputEnd:" destination="vXZ-lx-hvc" eventType="editingDidEndOnExit" id="wm8-UD-el9"/>
                                 </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="Cell" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="180" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9WG-q8-wwD">
-                                <rect key="frame" x="0.0" y="110" width="311" height="458"/>
+                                <rect key="frame" x="0.0" y="123" width="311" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
