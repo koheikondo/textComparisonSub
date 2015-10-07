@@ -10,13 +10,16 @@
 #import "CustomCellTableViewCell.h"
 #import "RightSlideMenuView.h"
 #import "DetailViewController.h"
+#import "BookMarkData.h"
+#import "AppDelegate.h"
 
 @interface ViewController (){
     NSArray *_rakuList;
+    NSMutableArray *_bookMarkArray;
     RightSlideMenuView *_sideMenuView;
     UIView *_viewForClosingSideMenu;
     BOOL _flg;
-    
+    UITableView *bookMarktable;
 }
 
 
@@ -32,12 +35,23 @@
     self.myTableVIew.delegate=self;
     self.myTableVIew.tag = 1;
     
+    //coredataの準備
+    AppDelegate *appDelegate =(AppDelegate*)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    self.managedObjectContext=context;
+    //配列にcoredataの中身を追加
+    NSFetchRequest *fetchRequest =[[NSFetchRequest alloc]initWithEntityName:@"BookMarkData"];
+    
+    NSArray *array =[self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    _bookMarkArray =[array mutableCopy];
+    
     //navigationControllerの名前
     self.title=@"安い順にでるよ！";
     //navigationControllerの右側の設定
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
     
-    UITableView *bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
+    bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
     bookMarktable.delegate = self;
     bookMarktable.dataSource = self;
     bookMarktable.tag = 2;
@@ -78,7 +92,7 @@
     return _rakuList.count;
     }else{
         //ブックマークテーブルの行数を返す。
-    return _textExplanation.count;
+    return _bookMarkArray.count;
     }
 }
 
@@ -127,7 +141,11 @@
             
             
         }
-         cell.textLabel.text=_textExplanation[indexPath.row];
+        
+        //bookmarkarrayの中にコアデータ型のデータ入ってる。そのためこのような指定が必要
+        BookMarkData *bookmarkdata =_bookMarkArray[indexPath.row];
+
+        cell.textLabel.text=bookmarkdata.title;
         return cell;
     }
 }
@@ -148,9 +166,45 @@
     
     [[self navigationController]pushViewController:dvc animated:YES];
     }else{
+     
+        
         //bookmarkの中身を書く
     }
 }
+
+//検索データをコアデータに追加
+- (IBAction)addBookMark:(id)sender {
+    
+    
+    //コアデータに追加
+    if([self.inputTextField.text isEqualToString:@""]){
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"お知らせ" message:@"文字が入力されていません。" delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+        [alert show];
+    }else{
+    
+        NSString *title =self.inputTextField.text;
+        
+        //coredataに保存
+        BookMarkData *bookmarkdata=[NSEntityDescription insertNewObjectForEntityForName:@"BookMarkData" inManagedObjectContext:self.managedObjectContext];
+        [bookmarkdata setTitle:title];
+        
+        NSError *error;
+        if(![self.managedObjectContext save:&error]){
+            NSLog(@"%@",error);
+        }else{
+            NSLog(@"保存成功");
+        }
+    }
+    
+    //配列に追加.
+    NSFetchRequest *fetchRequest =[[NSFetchRequest alloc]initWithEntityName:@"BookMarkData"];
+    
+    NSArray *array =[self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    _bookMarkArray =[array mutableCopy];
+    //TODO:aaa
+    [bookMarktable reloadData];
+}
+
 
 //検索した時の処理
 - (IBAction)textInputEnd:(id)sender {
@@ -190,6 +244,7 @@
     if(_flg){
         [self closeSideMenu:0];
     }else{
+       
     // show side menu with animation
     CGRect sideMenuFrame = _sideMenuView.frame;
     [UIView animateWithDuration:0.3f
@@ -204,6 +259,7 @@
                      } completion:^(BOOL finished) {
                          // アニメーションが終わった後実行する処理
                      }];
+        
         _flg=YES;
         
     // メニュー外をタップしたら、メニューを閉じるようにする

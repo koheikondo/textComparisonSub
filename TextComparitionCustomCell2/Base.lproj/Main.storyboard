@@ -28,10 +28,19 @@
                                 <rect key="frame" x="0.0" y="123" width="311" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZKW-qS-4WB">
+                                <rect key="frame" x="209" y="500" width="97" height="30"/>
+                                <state key="normal" title="addBookMark">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addBookMark:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WdC-e2-1JW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="BtL-5J-VH2"/>
+                    <navigationItem key="navigationItem" id="uxz-Rf-oQh"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="inputTextField" destination="u9m-AP-aLK" id="mEy-Ua-ssN"/>

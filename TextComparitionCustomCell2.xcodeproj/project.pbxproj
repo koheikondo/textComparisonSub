@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A412FBF41BC3606600387870 /* BookMarkData.m in Sources */ = {isa = PBXBuildFile; fileRef = A412FBF31BC3606500387870 /* BookMarkData.m */; };
 		A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A41375321BBF912100D0CA14 /* RightSlideMenuView.m */; };
 		A464E5C81BBD6D4300B30045 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A464E5C71BBD6D4300B30045 /* DetailViewController.m */; };
 		A4A7BF711BBAF20A001DAEA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF701BBAF20A001DAEA3 /* main.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A412FBF21BC3606500387870 /* BookMarkData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookMarkData.h; sourceTree = "<group>"; };
+		A412FBF31BC3606500387870 /* BookMarkData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookMarkData.m; sourceTree = "<group>"; };
 		A41375311BBF912100D0CA14 /* RightSlideMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RightSlideMenuView.h; path = ../RightSlideMenuView.h; sourceTree = "<group>"; };
 		A41375321BBF912100D0CA14 /* RightSlideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RightSlideMenuView.m; path = ../RightSlideMenuView.m; sourceTree = "<group>"; };
 		A464E5C61BBD6D4300B30045 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 				A4A7BF7B1BBAF20A001DAEA3 /* Main.storyboard */,
 				A4A7BF801BBAF20A001DAEA3 /* LaunchScreen.xib */,
 				A4A7BF751BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld */,
+				A412FBF21BC3606500387870 /* BookMarkData.h */,
+				A412FBF31BC3606500387870 /* BookMarkData.m */,
 				A4A7BF7E1BBAF20A001DAEA3 /* Images.xcassets */,
 				A4A7BF971BBAF39E001DAEA3 /* CustomCellView.xib */,
 				A4A7BF6E1BBAF20A001DAEA3 /* Supporting Files */,
@@ -242,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4A7BF741BBAF20A001DAEA3 /* AppDelegate.m in Sources */,
+				A412FBF41BC3606600387870 /* BookMarkData.m in Sources */,
 				A4A7BF771BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld in Sources */,
 				A4A7BF7A1BBAF20A001DAEA3 /* ViewController.m in Sources */,
 				A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */,
