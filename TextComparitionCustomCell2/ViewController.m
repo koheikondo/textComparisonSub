@@ -312,31 +312,39 @@
 //スワイプで削除（bookMarkBar)
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //CoreDataから削除
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        NSManagedObjectContext *context = [appDelegate managedObjectContext];
-        
-        BookMarkData *bookMarkData =  _bookMarkArray[indexPath.row];
-        [context deleteObject:bookMarkData];
-        
-        NSError *error = nil;
-        if (![context save:&error]) {
-            NSLog(@"%@", error);
-        } else {
-            NSLog(@"削除完了");
+    if(tableView.tag==2){
+    
+        if (editingStyle == UITableViewCellEditingStyleDelete) {
+            //CoreDataから削除
+            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            NSManagedObjectContext *context = [appDelegate managedObjectContext];
+            //↑２行はテンプレート　コアデータの中身を操作する際の。
+            
+            //_bookMarkArrayにはstring型だけではなく　コアデータのオブジェクトが入っているため識別できる。
+            BookMarkData *bookMarkData =  _bookMarkArray[indexPath.row];
+            [context deleteObject:bookMarkData];
+            
+            NSError *error = nil;
+            //save methodが実行されている。これを指定しないと上書きされない。
+            if (![context save:&error]) {
+                NSLog(@"%@", error);
+            } else {
+                NSLog(@"削除完了");
+            }
+            
+            //表示側も配列からデータを削除することでCoreDataの状態を反映
+            [_bookMarkArray removeObjectAtIndex:indexPath.row]; // 削除ボタンが押された行のデータを配列から削除します。
+            
+            //テーブルビューからも消します
+            [bookMarktable deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            
+        } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+            // ここは空のままでOKです。
         }
-        
-        //表示側も配列からデータを削除することでCoreDataの状態を反映
-        [_bookMarkArray removeObjectAtIndex:indexPath.row]; // 削除ボタンが押された行のデータを配列から削除します。
-        
-        //テーブルビューからも消します
-        [bookMarktable deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-        
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // ここは空のままでOKです。
     }
+    
+    
 }
 
 @end
