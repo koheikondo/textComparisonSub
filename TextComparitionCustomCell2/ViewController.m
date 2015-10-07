@@ -20,6 +20,7 @@
     UIView *_viewForClosingSideMenu;
     BOOL _flg;
     UITableView *bookMarktable;
+    NSString *_productName;//検索文字
 }
 
 
@@ -156,7 +157,7 @@
 }
 
 //セルが押された時の処理
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView.tag==1){
     DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
    
@@ -166,9 +167,23 @@
     
     [[self navigationController]pushViewController:dvc animated:YES];
     }else{
-     
         
+        //TODO:ワンテンポ遅れるブックマークバー
         //bookmarkの中身を書く
+        BookMarkData *bookmarkdata = _bookMarkArray[indexPath.row];
+        _productName =[NSString stringWithFormat:@"%@",bookmarkdata.title];
+        NSLog(@"プロダクトネーム=%@",_productName);
+       
+        self.inputTextField.text=[NSString stringWithFormat:@"%@",bookmarkdata.title];
+        
+        
+        
+        //JSONフィアルを取得
+        [self serchProduct];
+        
+        [self.myTableVIew reloadData];
+        //画面を閉じる。
+        [self closeSideMenu:0];
     }
 }
 
@@ -208,16 +223,27 @@
 
 //検索した時の処理
 - (IBAction)textInputEnd:(id)sender {
+    _productName =[NSString stringWithFormat:@"%@",self.inputTextField.text];
+   // NSString *name=[NSString stringWithFormat:@"%@",self.inputTextField.text];
     
-    NSString *name=[NSString stringWithFormat:@"%@",self.inputTextField.text];
-    NSString *encodeName = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+    //urlからJSONデータを取得。配列に入れる。
+    [self serchProduct];
+    
+    //テーブルビューをリロード
+    [self.myTableVIew reloadData];
+    NSLog(@"リロード完了");
+}
+
+//検索文字を検索する。webからAPIを引っ張ってきて、配列に入れている。
+-(void)serchProduct{
+    NSString *encodeName = [_productName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
     
     NSMutableString *myString=[NSMutableString stringWithFormat:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@",encodeName];
     
-   [myString appendString:@"&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+    [myString appendString:@"&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
     //文字列に%が入っているため2つに分けて文字列を生成する必要がある。
     
-   // NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+    // NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
     
     NSURL *rakuMyURL =[NSURL URLWithString:myString];
     
@@ -232,10 +258,6 @@
     NSDictionary* rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
     //&をつけると参照形式になり、その変数は引数にもなり、戻り値にもなる。
     _rakuList=rakujsonObject[@"Items"];
-    
-    //テーブルビューをリロード
-    [self.myTableVIew reloadData];
-    NSLog(@"リロード完了");
 }
 
 //ブックマークを右側から表示
