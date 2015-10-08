@@ -99,6 +99,7 @@
     }
 }
 
+//テーブルビューの中身を表示
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView.tag==1){
     static NSString*CellIdentifier=@"Cell";
@@ -372,15 +373,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
 }
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    // Detemine if it's in editing mode
-//    
-//   
-//    if (self.editing) {
-//        return UITableViewCellEditingStyleDelete;
-//    }
-//    return UITableViewCellEditingStyleNone;
-//    
-//}
-
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Detemine if it's in editing mode
+    if (tableView.tag==1) {
+    return UITableViewCellEditingStyleNone;
+    
+    }else{
+        return UITableViewCellEditingStyleDelete;
+    }
+}
 @end
