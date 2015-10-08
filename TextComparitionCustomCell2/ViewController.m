@@ -50,7 +50,9 @@
     //navigationControllerの名前
     self.title=@"安い順にでるよ！";
     //navigationControllerの右側の設定
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
+  //  self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
+    
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(rightBookMark)];
     
     bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
     bookMarktable.delegate = self;
@@ -364,9 +366,21 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         } else if (editingStyle == UITableViewCellEditingStyleInsert) {
             // ここは空のままでOKです。
         }
+    }else{
+        
     }
     
     
 }
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Detemine if it's in editing mode
+//    
+//   
+//    if (self.editing) {
+//        return UITableViewCellEditingStyleDelete;
+//    }
+//    return UITableViewCellEditingStyleNone;
+//    
+//}
 
 @end
