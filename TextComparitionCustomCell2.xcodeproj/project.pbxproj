@@ -20,6 +20,7 @@
 		A4A7BF8E1BBAF20A001DAEA3 /* TextComparitionCustomCell2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF8D1BBAF20A001DAEA3 /* TextComparitionCustomCell2Tests.m */; };
 		A4A7BF981BBAF39E001DAEA3 /* CustomCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4A7BF971BBAF39E001DAEA3 /* CustomCellView.xib */; };
 		A4A7BF9B1BBAF448001DAEA3 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */; };
+		A4FFAD101BC8F06100F82673 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFAD0F1BC8F06100F82673 /* XMLReader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		A4A7BF971BBAF39E001DAEA3 /* CustomCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCellView.xib; sourceTree = "<group>"; };
 		A4A7BF991BBAF448001DAEA3 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
 		A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
+		A4FFAD0E1BC8F06100F82673 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
+		A4FFAD0F1BC8F06100F82673 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +113,8 @@
 				A4A7BF751BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld */,
 				A412FBF21BC3606500387870 /* BookMarkData.h */,
 				A412FBF31BC3606500387870 /* BookMarkData.m */,
+				A4FFAD0E1BC8F06100F82673 /* XMLReader.h */,
+				A4FFAD0F1BC8F06100F82673 /* XMLReader.m */,
 				A4A7BF7E1BBAF20A001DAEA3 /* Images.xcassets */,
 				A4A7BF971BBAF39E001DAEA3 /* CustomCellView.xib */,
 				A4A7BF6E1BBAF20A001DAEA3 /* Supporting Files */,
@@ -253,6 +258,7 @@
 				A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */,
 				A4A7BF9B1BBAF448001DAEA3 /* CustomCellTableViewCell.m in Sources */,
 				A4A7BF711BBAF20A001DAEA3 /* main.m in Sources */,
+				A4FFAD101BC8F06100F82673 /* XMLReader.m in Sources */,
 				A464E5C81BBD6D4300B30045 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

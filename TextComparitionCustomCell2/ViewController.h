@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NSFetchedResultsControllerDelegate>{
-    NSArray * _textExplanation;
+    
 }
 
 @property(strong,nonatomic)NSFetchedResultsController *fetchedResultsController;
