@@ -160,7 +160,7 @@
     [[self navigationController]pushViewController:dvc animated:YES];
     }else{
         
-        //TODO:ワンテンポ遅れるブックマークバー
+        //ワンテンポ遅れるブックマークバー
         //bookmarkの中身を書く
         BookMarkData *bookmarkdata = _bookMarkArray[indexPath.row];
         _productName =[NSString stringWithFormat:@"%@",bookmarkdata.title];
@@ -200,6 +200,8 @@
             NSLog(@"%@",error);
         }else{
             NSLog(@"保存成功");
+            UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"message" message:@"BookMarkに追加されました。" delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+            [alert show];
         }
     }
     
@@ -250,6 +252,114 @@
     NSDictionary* rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
     //&をつけると参照形式になり、その変数は引数にもなり、戻り値にもなる。
     _rakuList=rakujsonObject[@"Items"];
+    
+    
+    
+    
+    
+    //AmazonAPIスタート
+    
+    NSMutableString *myStringOfHash=[NSMutableString stringWithString:@"GET\nwebservices.amazon.co.jp\n/onca/xml\n"];
+    
+    NSMutableString *myString1=[NSMutableString stringWithFormat:@"http://webservices.amazon.co.jp/onca/xml?"];
+    //http://webservices.amazon.com/onca/xml?
+    
+    
+    NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encodeName];
+    //TODO:検索文字を追加の処理を書く。
+    
+    //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Sort=price&Timestamp=";
+    //カテゴリ指定しないバージョン
+    //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
+    
+    
+    //カテゴリ指定するバージョン
+    NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
+    //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
+    [myString2 appendString:myString2_1];
+    
+    NSLog(@"%@",myString2);
+    
+    NSString *myString3=@"&Version=2013-08-01";
+    NSString *myString4=@"&Signature=";
+    
+    //今日の日付を取得
+    NSDate *now =[NSDate date];
+    NSLog(@"現在時刻%@",now);
+    //指定した書式で日付を文字列に変換する。
+    NSDateFormatter *dateFormatter =[[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    // 日付を yyyy/MM/dd hh:mm:ss形式に変更
+    NSString *dateString = [dateFormatter stringFromDate:now];
+    NSLog(@"%@", dateString);
+    [myString2 appendString:dateString];
+    
+    
+    NSDate *now2 =[NSDate date];
+    NSLog(@"現在時刻%@",now2);
+    //指定した書式で日付を文字列に変換する。
+    NSDateFormatter *dateFormatterM =[[NSDateFormatter alloc]init];
+    [dateFormatterM setDateFormat:@"HH:mm:ss"];
+    
+    // 日付を yyyy/MM/dd hh:mm:ss形式に変更
+    NSString *dateString2 = [dateFormatterM stringFromDate:now2];
+    NSLog(@"%@", dateString2);
+    
+    //追加するときの文字列を作成T~Z形式
+    NSString *dateFinal=[NSString stringWithFormat:@"T%@Z",dateString2];
+    NSLog(@"最終日付%@",dateFinal);
+    
+    //エンコーディング
+    NSString *encodeNameDate = [dateFinal stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+    
+    [myString2 appendString:encodeNameDate];
+    [myString2 appendString:myString3];
+    [myStringOfHash appendString:myString2];
+    
+    
+    //ハッシュタグを取得、#include <CommonCrypto/CommonDigest.h>#include <CommonCrypto/CommonHMAC.h>
+    NSString *key;
+    key=@"XIURsSPrqyImsfeMrhiB7cTCgIopq9uv6wQopvCg";
+    const char *cKey = [key cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [myStringOfHash cStringUsingEncoding:NSASCIIStringEncoding];
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *hash = [HMAC base64EncodedStringWithOptions:0];
+    //base64Encoding  base64EncodedStringWithOptions:0
+    
+    NSString *encodeNameDateHash = [hash stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+    
+    
+    [myString1 appendString:myString2];
+    [myString1 appendString:myString4];
+    [myString1 appendString:encodeNameDateHash];
+    
+    NSURL *amazonMyURL =[NSURL URLWithString:myString1];
+    
+    //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
+    
+    
+    NSURLRequest *amazonMyURLReq=[NSURLRequest requestWithURL:amazonMyURL];
+    
+    //↓onnectionで通信開始。
+    NSData *amazonXML_data=[NSURLConnection sendSynchronousRequest:amazonMyURLReq returningResponse:nil error:nil];
+    
+    NSLog(@"amazonXMLデータは%@",amazonXML_data);
+    
+    //XMLReaderをインストールして、#importする。
+    NSError*amazonError1;
+    NSDictionary*amazonDict= [XMLReader dictionaryForXMLData:amazonXML_data options:XMLReaderOptionsProcessNamespaces  error:&amazonError1];
+    
+    NSError *amazonError;
+    NSData *amazonJsonDate=[NSJSONSerialization dataWithJSONObject:amazonDict options:NSJSONWritingPrettyPrinted error:&amazonError];
+    NSString *amazonJsonString=[[NSString alloc]initWithData:amazonJsonDate encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",amazonJsonString);
+    
+    //出来たURLの確認
+    NSLog(@"URL=%@",myString1);
+    NSLog(@"最終日付エンコード後＝%@",encodeNameDate);
 }
 
 //ブックマークを右側から表示
