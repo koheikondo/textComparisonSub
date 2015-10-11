@@ -18,12 +18,16 @@
 
 @interface ViewController (){
     NSArray *_rakuList;
+    NSArray *_amazonList;
     NSMutableArray *_bookMarkArray;
     RightSlideMenuView *_sideMenuView;
     UIView *_viewForClosingSideMenu;
     BOOL _flg;
     UITableView *bookMarktable;
     NSString *_productName;//検索文字
+    
+    NSMutableArray *_amazonCollect;
+    NSMutableArray *_rakutenCollect;
 }
 
 
@@ -153,7 +157,7 @@
     if(tableView.tag==1){
     DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
    
-    
+    //TODO:URL後で変更
     dvc.toURL=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]];
     
     
@@ -230,6 +234,8 @@
 
 //検索文字を検索する。webからAPIを引っ張ってきて、配列に入れている。
 -(void)serchProduct{
+    
+    
     NSString *encodeName = [_productName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
     
     NSMutableString *myString=[NSMutableString stringWithFormat:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@",encodeName];
@@ -357,9 +363,93 @@
     NSString *amazonJsonString=[[NSString alloc]initWithData:amazonJsonDate encoding:NSUTF8StringEncoding];
     NSLog(@"%@",amazonJsonString);
     
-    //出来たURLの確認
+
     NSLog(@"URL=%@",myString1);
     NSLog(@"最終日付エンコード後＝%@",encodeNameDate);
+    
+    //new code
+    NSError *amazonError2;
+    NSDictionary* amazonObject=[NSJSONSerialization JSONObjectWithData:amazonJsonDate options:NSJSONReadingAllowFragments  error:&amazonError2];
+    
+    _amazonList=amazonObject[@"ItemSearchResponse"][@"Items"][@"Item"];
+    NSLog(@"%@AmazonArray(^^)",_amazonList);
+    
+   
+    
+    //高速列挙でオリジナル配列にAmazonデータをまとめている。
+    
+    _amazonCollect=[[NSMutableArray alloc]init];
+    for (NSMutableDictionary * amaDic1 in _amazonList) {
+        NSMutableDictionary *amaDic;
+        amaDic=[[NSMutableDictionary alloc]init];
+        [amaDic setObject:amaDic1[@"DetailPageURL"][@"text"] forKey:@"URL"];
+        
+        //そもそもkeyがないときはnilが入る。
+        [amaDic setObject:amaDic1[@"SmallImage"][@"URL"][@"text"] forKey:@"image"];
+        [amaDic setObject:amaDic1[@"ItemAttributes"][@"Title"][@"text"] forKey:@"title"];
+        
+        
+        BOOL is_exists = [amaDic1.allKeys containsObject:@"OfferSummary"];
+        BOOL is_exists2 = [amaDic1.allKeys containsObject:@"ItemAttributes"];
+
+        if(is_exists){
+            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
+        }else if(is_exists2){
+            NSDictionary *subAmaDic =amaDic1[@"ItemAttributes"];
+            BOOL is_exists3 = [subAmaDic.allKeys containsObject:@"ListPrice"];
+            if (is_exists3) {
+                [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
+            }
+            
+            
+        }else{
+            [amaDic setObject:@"999999"forKey:@"usedPrice"];
+        }
+        
+        
+        
+        [amaDic setObject:@"amazon" forKey:@"judge"];
+        
+        [_amazonCollect addObject:amaDic];
+    }
+    
+    
+    
+    NSLog(@"%@Amazonのほしい情報だけとったやつ",_amazonCollect);
+    
+    
+    
+    //高速列挙でオリジナル配列に楽天データをまとめている。
+    
+   _rakutenCollect=[[NSMutableArray alloc]init];
+    for (NSMutableDictionary * rakuDic1 in _rakuList) {
+        NSMutableDictionary *rakuDic;
+        rakuDic=[[NSMutableDictionary alloc]init];
+        
+        //_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]
+        [rakuDic setObject:rakuDic1[@"Item"][@"affiliateUrl"] forKey:@"URL"];
+        //そもそもkeyがないときはnilが入る。
+        
+        
+        NSArray *myArray= rakuDic1[@"Item"][@"mediumImageUrls"];
+        NSDictionary *myArraysub =myArray[0];
+        NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+        
+        
+        
+        [rakuDic setObject:rakuImage forKey:@"image"];
+        [rakuDic setObject:rakuDic1[@"Item"][@"itemName"] forKey:@"title"];
+        [rakuDic setObject:rakuDic1[@"Item"][@"itemPrice"]forKey:@"usedPrice"];
+        //[rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
+        [rakuDic setObject:@"楽天" forKey:@"judge"];
+        [_rakutenCollect addObject:rakuDic];
+    }
+    
+    NSLog(@"%@楽天の欲しいタグだけとったやつ。",_rakutenCollect);
+    
+    
+    
+    
 }
 
 //ブックマークを右側から表示
