@@ -423,7 +423,11 @@
         
         [amaDic setObject:@"amazon" forKey:@"judge"];
         
+        NSString *amaCompare =amaDic[@"usedPrice"];
+        int amaCompareInt = amaCompare.intValue;
+        if(amaCompareInt<999999){
         [_amazonCollect addObject:amaDic];
+        }
     }
     
     
