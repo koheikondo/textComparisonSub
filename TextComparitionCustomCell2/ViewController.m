@@ -86,7 +86,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView.tag==1){
-    return _rakuList.count;
+    return _totalCollect.count;
     }else{
         //ブックマークテーブルの行数を返す。
     return _bookMarkArray.count;
@@ -100,14 +100,14 @@
     CustomCellTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     //商品名を表示
-    cell.textTitleLabel.text=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"itemName"]];
+    cell.textTitleLabel.text=[NSString stringWithFormat:@"%@",_totalCollect[indexPath.row][@"title"]];
     
     //値段を表示
-    cell.priceLabel.text=[NSString stringWithFormat:@"%@円",_rakuList[indexPath.row][@"Item"][@"itemPrice"]];
+    cell.priceLabel.text=[NSString stringWithFormat:@"%@円",_totalCollect[indexPath.row][@"usedPrice"]];
     
     //imageを表示
-    NSArray *myArray= _rakuList[indexPath.row][@"Item"][@"mediumImageUrls"];
-    NSDictionary *myArraysub =myArray[0];
+//    NSArray *myArray= _rakuList[indexPath.row][@"Item"][@"mediumImageUrls"];
+//    NSDictionary *myArraysub =myArray[0];
     
     
    // NSDictionary *dic =[NSString stringWithFormat:@"%@",myArray[@"mediumImageUrls"][@"imageUrl"]];
@@ -116,8 +116,8 @@
     //NSURL *myURL=[NSURL URLWithString:[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"mediumImageUrls"][@"imageUrl"]]];
     // NSURL *myURL=[NSURL URLWithString:@"http://thumbnail.image.rakuten.co.jp/@0_mall/glbooks/cabinet/04574985/syouhinga.jpg?_ex=64x64"];
 
-    
-    NSURL *myURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]]];
+    //imageを表示
+    NSURL *myURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@",_totalCollect[indexPath.row][@"image"]]];
     
        NSLog(@"%@",myURL);
     
@@ -126,6 +126,9 @@
     
     
     cell.cellImageVIew.image=myImage;
+        
+        //楽天Amazon判断。
+        cell.titleLabel.text=[NSString stringWithFormat:@"%@",_totalCollect[indexPath.row][@"judge"]];
         
         return cell;
     }else{
@@ -159,7 +162,7 @@
     DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
    
     //TODO:URL後で変更
-    dvc.toURL=[NSString stringWithFormat:@"%@",_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]];
+    dvc.toURL=[NSString stringWithFormat:@"%@",_totalCollect[indexPath.row][@"URL"]];
     
     
     [[self navigationController]pushViewController:dvc animated:YES];
@@ -440,7 +443,11 @@
         
         [rakuDic setObject:rakuImage forKey:@"image"];
         [rakuDic setObject:rakuDic1[@"Item"][@"itemName"] forKey:@"title"];
-        [rakuDic setObject:rakuDic1[@"Item"][@"itemPrice"]forKey:@"usedPrice"];
+        //楽天のものはlong型で入っているため、int型にキャストする。→そうしないとソートできない。
+       
+        
+        int itemPrice =(int)rakuDic1[@"Item"][@"itemPrice"];
+        [rakuDic setObject:[NSString stringWithFormat:@"%d",itemPrice]forKey:@"usedPrice"];
         //[rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
         [rakuDic setObject:@"楽天" forKey:@"judge"];
         [_rakutenCollect addObject:rakuDic];
