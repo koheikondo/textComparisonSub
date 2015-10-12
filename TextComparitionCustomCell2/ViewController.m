@@ -397,17 +397,26 @@
         BOOL is_exists2 = [amaDic1.allKeys containsObject:@"ItemAttributes"];
 
         if(is_exists){
-            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
+            
+            NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestUsedPrice"][@"Amount"][@"text"];
+            NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+            [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+//            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
         }else if(is_exists2){
             NSDictionary *subAmaDic =amaDic1[@"ItemAttributes"];
             BOOL is_exists3 = [subAmaDic.allKeys containsObject:@"ListPrice"];
             if (is_exists3) {
-                [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
+                
+                NSString *amaMozi =amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] ;
+                NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+                [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+                
+  //              [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
             }
             
-            [amaDic setObject:@"999999"forKey:@"usedPrice"];
+            [amaDic setObject:@999999 forKey:@"usedPrice"];
         }else{
-            [amaDic setObject:@"999999"forKey:@"usedPrice"];
+            [amaDic setObject:@999999 forKey:@"usedPrice"];
         }
         
         
@@ -446,9 +455,12 @@
         //楽天のものはlong型で入っているため、int型にキャストする。→そうしないとソートできない。
        
         
-        int itemPrice =(int)rakuDic1[@"Item"][@"itemPrice"];
-        [rakuDic setObject:[NSString stringWithFormat:@"%d",itemPrice]forKey:@"usedPrice"];
-        //[rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
+        NSString *rakuMozi =rakuDic1[@"Item"][@"itemPrice"];
+        NSNumber* rakuPriceMozi =[NSNumber numberWithInt:rakuMozi.intValue];
+       [rakuDic setObject:rakuPriceMozi forKey:@"usedPrice"];
+//        [rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
+     //   [rakuDic setObject:[NSString stringWithFormat:@"%@",rakuDic1[@"Item"][@"itemPrice"]]forKey:@"usedPrice"];
+        
         [rakuDic setObject:@"楽天" forKey:@"judge"];
         [_rakutenCollect addObject:rakuDic];
     }
