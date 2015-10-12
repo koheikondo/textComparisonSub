@@ -28,6 +28,7 @@
     
     NSMutableArray *_amazonCollect;
     NSMutableArray *_rakutenCollect;
+    NSMutableArray *_totalCollect;
 }
 
 
@@ -272,15 +273,15 @@
     
     
     NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encodeName];
-    //TODO:検索文字を追加の処理を書く。
+    
     
     //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Sort=price&Timestamp=";
     //カテゴリ指定しないバージョン
-    //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
+      NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
     
     
     //カテゴリ指定するバージョン
-    NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
+    //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
     //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
     [myString2 appendString:myString2_1];
     
@@ -401,7 +402,7 @@
                 [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
             }
             
-            
+            [amaDic setObject:@"999999"forKey:@"usedPrice"];
         }else{
             [amaDic setObject:@"999999"forKey:@"usedPrice"];
         }
@@ -447,9 +448,23 @@
     
     NSLog(@"%@楽天の欲しいタグだけとったやつ。",_rakutenCollect);
     
+//    NSArray *amaArraySub=[_amazonCollect copy];
+//    NSArray *rakuArraySUb=[_rakutenCollect copy];
+    NSArray *subTotal = [_amazonCollect arrayByAddingObjectsFromArray:_rakutenCollect];
     
     
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"usedPrice" ascending:YES];
+    // 配列に入れておいて
+    NSArray *sortarray = [NSArray arrayWithObject:sortDescriptor];
+    // ソートしちゃる！
     
+    //TODO:ここで問題が起きる他ものは基本的におｋだった。
+   NSArray *subTotal2  = [subTotal sortedArrayUsingDescriptors:sortarray];
+    
+    
+    _totalCollect=[subTotal2 copy];
+    
+    NSLog(@"%@ソートし終わったやつ！！",_totalCollect);
 }
 
 //ブックマークを右側から表示
