@@ -16,6 +16,7 @@
 @property(strong,nonatomic)NSFetchedResultsController *fetchedResultsController;
 @property(strong,nonatomic)NSManagedObjectContext * managedObjectContext;
 //データ（コア）を取得する時に使うオブジェクトと管理（追加、削除、更新）するオブジェクト
+@property (weak, nonatomic) IBOutlet UIWebView *myRakutenWebVIew;
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableVIew;
 @property (weak, nonatomic) IBOutlet UITextField *inputTextField;

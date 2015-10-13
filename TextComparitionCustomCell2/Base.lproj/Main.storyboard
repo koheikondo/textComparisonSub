@@ -46,6 +46,10 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9oF-oo-GbD">
+                                <rect key="frame" x="3" y="495" width="176" height="71"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -53,6 +57,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="inputTextField" destination="u9m-AP-aLK" id="mEy-Ua-ssN"/>
+                        <outlet property="myRakutenWebVIew" destination="9oF-oo-GbD" id="6AW-fU-3Wi"/>
                         <outlet property="myTableVIew" destination="9WG-q8-wwD" id="tVY-e1-gdq"/>
                     </connections>
                 </viewController>

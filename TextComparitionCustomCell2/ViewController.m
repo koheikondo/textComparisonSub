@@ -15,6 +15,7 @@
 #import "XMLReader.h"
 #include <CommonCrypto/CommonDigest.h>
 #include <CommonCrypto/CommonHMAC.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface ViewController (){
     NSArray *_rakuList;
@@ -38,6 +39,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //楽天の商標登録画像の表示。
+    NSString * path=[[NSBundle mainBundle]pathForResource:@"rakuten" ofType:@"html"];
+    NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]];
+    [self.myRakutenWebVIew loadRequest:request];
+    
+    
+    //Bookmarkの方のflg
     _flg=NO;
     
     self.myTableVIew.dataSource=self;
@@ -181,7 +190,7 @@
         //JSONフィアルを取得
         [self serchProduct];
         
-        [self.myTableVIew reloadData];
+        
         //画面を閉じる。
         [self closeSideMenu:0];
     }
@@ -232,13 +241,29 @@
     [self serchProduct];
     
     //テーブルビューをリロード
-    [self.myTableVIew reloadData];
+  //  [self.myTableVIew reloadData];
     NSLog(@"リロード完了");
 }
 
 //検索文字を検索する。webからAPIを引っ張ってきて、配列に入れている。
 -(void)serchProduct{
+    [SVProgressHUD show];
+    if ([_productName isEqual:@""]) {
+        self.myRakutenWebVIew.alpha=1;
+    }else{
+    self.myRakutenWebVIew.alpha=0;
+    }
     
+    // 非同期処理 (dispatch)
+    dispatch_queue_t global_q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); // 裏側で処理を動かすキューを作成
+    //大文字で全て書かれているものは定数で書かれている可能性が非常に高い。↑
+    dispatch_queue_t mail_q = dispatch_get_main_queue(); // globalなキューが終了した際に呼ばれるキューを作成　←C言語（C言語）　おそらくオブジェクトCでは準備されてないためC言語を使っているnot自作メソッド
+    
+    //非同期処理をこれからしますよ
+    //^{}ブロック構文
+    dispatch_async(global_q, ^{
+        // 重たい処理をさせる
+        // apiを叩く処理 → 時間のかかる重たい処理
     
     NSString *encodeName = [_productName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
     
@@ -491,6 +516,13 @@
     _totalCollect=[subTotal2 copy];
     
     NSLog(@"%@ソートし終わったやつ！！",_totalCollect);
+        
+        dispatch_async(mail_q, ^{
+            // globalの処理が終わった際にやりたい処理
+            [self.myTableVIew reloadData];
+            [SVProgressHUD dismiss];//くるくる回っているのを消す。
+            });
+        });
 }
 
 //ブックマークを右側から表示
