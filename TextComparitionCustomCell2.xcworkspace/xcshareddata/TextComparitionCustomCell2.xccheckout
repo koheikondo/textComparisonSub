@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>C4FE8C9C-DF2E-4606-B174-35242910DC81</string>
+	<string>0798738B-EBE6-45AE-9F53-9C0E25E221FA</string>
 	<key>IDESourceControlProjectName</key>
 	<string>TextComparitionCustomCell2</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,11 +14,11 @@
 		<string>https://github.com/koheikondo/textComparisonSub.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>TextComparitionCustomCell2.xcodeproj</string>
+	<string>TextComparitionCustomCell2.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4D6400DEFED5D2415C59BA04BB2CC65985BAF491</key>
-		<string>../..</string>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/koheikondo/textComparisonSub.git</string>

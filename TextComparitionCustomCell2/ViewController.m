@@ -423,6 +423,9 @@
         
         [amaDic setObject:@"amazon" forKey:@"judge"];
         
+        
+        //値段が書いていないものを除外する処理。
+        
         NSString *amaCompare =amaDic[@"usedPrice"];
         int amaCompareInt = amaCompare.intValue;
         if(amaCompareInt<999999){
