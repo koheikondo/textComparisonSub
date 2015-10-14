@@ -23,6 +23,10 @@
 		A4A7BF9B1BBAF448001DAEA3 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */; };
 		A4B18CE11BCCAD230003D21D /* rakuten.html in Resources */ = {isa = PBXBuildFile; fileRef = A4B18CE01BCCAD220003D21D /* rakuten.html */; };
 		A4B18CE31BCDE5160003D21D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B18CE21BCDE5150003D21D /* iAd.framework */; };
+		A4C757F41BCDFE78004F46F3 /* Entypo_27a6(0)_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F21BCDFE78004F46F3 /* Entypo_27a6(0)_48.png */; };
+		A4C757F51BCDFE79004F46F3 /* Entypo_2665(1)_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F31BCDFE78004F46F3 /* Entypo_2665(1)_48.png */; };
+		A4C757F81BCE0018004F46F3 /* Entypo_27a6(0)_128.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */; };
+		A4C757F91BCE0018004F46F3 /* Entypo_2665(1)_128.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */; };
 		A4FFAD101BC8F06100F82673 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFAD0F1BC8F06100F82673 /* XMLReader.m */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +68,10 @@
 		A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
 		A4B18CE01BCCAD220003D21D /* rakuten.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rakuten.html; sourceTree = "<group>"; };
 		A4B18CE21BCDE5150003D21D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		A4C757F21BCDFE78004F46F3 /* Entypo_27a6(0)_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_27a6(0)_48.png"; sourceTree = SOURCE_ROOT; };
+		A4C757F31BCDFE78004F46F3 /* Entypo_2665(1)_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_2665(1)_48.png"; sourceTree = SOURCE_ROOT; };
+		A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_27a6(0)_128.png"; sourceTree = "<group>"; };
+		A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_2665(1)_128.png"; sourceTree = "<group>"; };
 		A4FFAD0E1BC8F06100F82673 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		A4FFAD0F1BC8F06100F82673 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EDF0B1DC85B38090386A93B1 /* Pods-TextComparitionCustomCell2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextComparitionCustomCell2.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextComparitionCustomCell2/Pods-TextComparitionCustomCell2.release.xcconfig"; sourceTree = "<group>"; };
@@ -156,6 +164,10 @@
 		A4A7BF6E1BBAF20A001DAEA3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */,
+				A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */,
+				A4C757F21BCDFE78004F46F3 /* Entypo_27a6(0)_48.png */,
+				A4C757F31BCDFE78004F46F3 /* Entypo_2665(1)_48.png */,
 				A4A7BF6F1BBAF20A001DAEA3 /* Info.plist */,
 				A4A7BF701BBAF20A001DAEA3 /* main.m */,
 				A4A7BF991BBAF448001DAEA3 /* CustomCellTableViewCell.h */,
@@ -265,7 +277,11 @@
 			files = (
 				A4B18CE11BCCAD230003D21D /* rakuten.html in Resources */,
 				A4A7BF7D1BBAF20A001DAEA3 /* Main.storyboard in Resources */,
+				A4C757F81BCE0018004F46F3 /* Entypo_27a6(0)_128.png in Resources */,
+				A4C757F41BCDFE78004F46F3 /* Entypo_27a6(0)_48.png in Resources */,
+				A4C757F51BCDFE79004F46F3 /* Entypo_2665(1)_48.png in Resources */,
 				A4A7BF981BBAF39E001DAEA3 /* CustomCellView.xib in Resources */,
+				A4C757F91BCE0018004F46F3 /* Entypo_2665(1)_128.png in Resources */,
 				A4A7BF821BBAF20A001DAEA3 /* LaunchScreen.xib in Resources */,
 				A4A7BF7F1BBAF20A001DAEA3 /* Images.xcassets in Resources */,
 			);
