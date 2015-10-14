@@ -43,6 +43,9 @@
                                 <state key="normal" image="Entypo_27a6(0)_128.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="shareBtn:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="jrs-u5-jG1"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BookMark" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ky-1m-p22">
                                 <rect key="frame" x="238" y="540" width="82" height="40"/>

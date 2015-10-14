@@ -23,6 +23,7 @@
 - (IBAction)addBookMark:(id)sender;
 
 - (IBAction)textInputEnd:(id)sender;
+- (IBAction)shareBtn:(id)sender;
 
 @end
 

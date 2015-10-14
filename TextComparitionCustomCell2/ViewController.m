@@ -259,6 +259,20 @@
     NSLog(@"リロード完了");
 }
 
+- (IBAction)shareBtn:(id)sender {
+    
+    //シェア機能
+    NSString *text= @"本や教科書を安く買える!！";
+    NSURL*url= [NSURL URLWithString:@"http://google.com"];
+    UIImage *image=[UIImage imageNamed:@"Icon-60@3x.png"];
+    
+    NSArray *activityItems = @[text,image];
+    
+    UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    
+    [self presentViewController:activityView animated:YES completion:nil];
+}
+
 //検索文字を検索する。webからAPIを引っ張ってきて、配列に入れている。
 -(void)serchProduct{
     [SVProgressHUD show];
@@ -428,7 +442,12 @@
         [amaDic setObject:amaDic1[@"DetailPageURL"][@"text"] forKey:@"URL"];
         
         //そもそもkeyがないときはnilが入る。
-        [amaDic setObject:amaDic1[@"SmallImage"][@"URL"][@"text"] forKey:@"image"];
+        BOOL is_exists0 = [amaDic1.allKeys containsObject:@"SmallImage"];
+        if(is_exists0){
+            [amaDic setObject:amaDic1[@"SmallImage"][@"URL"][@"text"] forKey:@"image"];
+        }else{
+            [amaDic setObject:@"" forKey:@"image"];
+        }
         [amaDic setObject:amaDic1[@"ItemAttributes"][@"Title"][@"text"] forKey:@"title"];
         
         
@@ -437,9 +456,18 @@
 
         if(is_exists){
             
+            NSDictionary *subAmaDic =amaDic1[@"OfferSummary"];
+            BOOL is_exists4 = [subAmaDic.allKeys containsObject:@"LowestUsedPrice"];
+            if(is_exists4){
+            
             NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestUsedPrice"][@"Amount"][@"text"];
             NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
             [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+            }else{
+                NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestNewPrice"][@"Amount"][@"text"];
+                NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+                [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+            }
 //            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
         }else if(is_exists2){
             NSDictionary *subAmaDic =amaDic1[@"ItemAttributes"];

@@ -27,6 +27,7 @@
 		A4C757F51BCDFE79004F46F3 /* Entypo_2665(1)_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F31BCDFE78004F46F3 /* Entypo_2665(1)_48.png */; };
 		A4C757F81BCE0018004F46F3 /* Entypo_27a6(0)_128.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */; };
 		A4C757F91BCE0018004F46F3 /* Entypo_2665(1)_128.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */; };
+		A4C757FB1BCE02DF004F46F3 /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C757FA1BCE02DF004F46F3 /* Icon-60@3x.png */; };
 		A4FFAD101BC8F06100F82673 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFAD0F1BC8F06100F82673 /* XMLReader.m */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		A4C757F31BCDFE78004F46F3 /* Entypo_2665(1)_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_2665(1)_48.png"; sourceTree = SOURCE_ROOT; };
 		A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_27a6(0)_128.png"; sourceTree = "<group>"; };
 		A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Entypo_2665(1)_128.png"; sourceTree = "<group>"; };
+		A4C757FA1BCE02DF004F46F3 /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
 		A4FFAD0E1BC8F06100F82673 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		A4FFAD0F1BC8F06100F82673 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EDF0B1DC85B38090386A93B1 /* Pods-TextComparitionCustomCell2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextComparitionCustomCell2.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextComparitionCustomCell2/Pods-TextComparitionCustomCell2.release.xcconfig"; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		A4A7BF6E1BBAF20A001DAEA3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A4C757FA1BCE02DF004F46F3 /* Icon-60@3x.png */,
 				A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */,
 				A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */,
 				A4C757F21BCDFE78004F46F3 /* Entypo_27a6(0)_48.png */,
@@ -281,6 +284,7 @@
 				A4C757F41BCDFE78004F46F3 /* Entypo_27a6(0)_48.png in Resources */,
 				A4C757F51BCDFE79004F46F3 /* Entypo_2665(1)_48.png in Resources */,
 				A4A7BF981BBAF39E001DAEA3 /* CustomCellView.xib in Resources */,
+				A4C757FB1BCE02DF004F46F3 /* Icon-60@3x.png in Resources */,
 				A4C757F91BCE0018004F46F3 /* Entypo_2665(1)_128.png in Resources */,
 				A4A7BF821BBAF20A001DAEA3 /* LaunchScreen.xib in Resources */,
 				A4A7BF7F1BBAF20A001DAEA3 /* Images.xcassets in Resources */,
