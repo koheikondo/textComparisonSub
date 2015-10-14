@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TextComparitionCustomCell2/ViewController.m"
-            timestampString = "466400471.549614"
+            timestampString = "466480143.761628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "504"
-            endingLineNumber = "504"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "-serchProduct"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TextComparitionCustomCell2/ViewController.m"
-            timestampString = "466400471.549614"
+            timestampString = "466480143.761628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "501"
-            endingLineNumber = "501"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
             landmarkName = "-serchProduct"
             landmarkType = "5">
          </BreakpointContent>

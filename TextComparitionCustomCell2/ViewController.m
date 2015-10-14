@@ -78,6 +78,8 @@
     
     _sideMenuView = (RightSlideMenuView *)bookMarktable;
     
+    bookMarktable.backgroundColor = [UIColor lightGrayColor];
+    
     [self.view addSubview:_sideMenuView];
     
     
@@ -156,6 +158,18 @@
         BookMarkData *bookmarkdata =_bookMarkArray[indexPath.row];
 
         cell.textLabel.text=bookmarkdata.title;
+        
+        if (indexPath.row % 2 == 0) {
+            cell.backgroundColor = [UIColor whiteColor];
+            // does not work
+        }
+        // For odd
+        else {
+            cell.backgroundColor = [UIColor colorWithHue:0.61
+                                              saturation:0.09
+                                              brightness:0.99
+                                                   alpha:1.0];     // does not work
+        }
         return cell;
     }
 }

@@ -22,6 +22,7 @@
 		A4A7BF981BBAF39E001DAEA3 /* CustomCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4A7BF971BBAF39E001DAEA3 /* CustomCellView.xib */; };
 		A4A7BF9B1BBAF448001DAEA3 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */; };
 		A4B18CE11BCCAD230003D21D /* rakuten.html in Resources */ = {isa = PBXBuildFile; fileRef = A4B18CE01BCCAD220003D21D /* rakuten.html */; };
+		A4B18CE31BCDE5160003D21D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B18CE21BCDE5150003D21D /* iAd.framework */; };
 		A4FFAD101BC8F06100F82673 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFAD0F1BC8F06100F82673 /* XMLReader.m */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		A4A7BF991BBAF448001DAEA3 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
 		A4A7BF9A1BBAF448001DAEA3 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
 		A4B18CE01BCCAD220003D21D /* rakuten.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rakuten.html; sourceTree = "<group>"; };
+		A4B18CE21BCDE5150003D21D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		A4FFAD0E1BC8F06100F82673 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		A4FFAD0F1BC8F06100F82673 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EDF0B1DC85B38090386A93B1 /* Pods-TextComparitionCustomCell2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextComparitionCustomCell2.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextComparitionCustomCell2/Pods-TextComparitionCustomCell2.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4B18CE31BCDE5160003D21D /* iAd.framework in Frameworks */,
 				36CC4FA460C653EE554AAC25 /* libPods-TextComparitionCustomCell2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,6 +101,7 @@
 		3FEB8AC738B67A1037292F62 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4B18CE21BCDE5150003D21D /* iAd.framework */,
 				75CB7B970BE19BF3A1351C98 /* libPods-TextComparitionCustomCell2.a */,
 			);
 			name = Frameworks;
