@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <iAd/iAd.h>
 
-@interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NSFetchedResultsControllerDelegate>{
-    
+@interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NSFetchedResultsControllerDelegate,ADBannerViewDelegate>{
+    ADBannerView *_adView;
+    BOOL _inVisble;
 }
 
 @property(strong,nonatomic)NSFetchedResultsController *fetchedResultsController;

@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <iAd/iAd.h>
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController<ADBannerViewDelegate>{
+    ADBannerView *_adView;
+    BOOL _inVisble;
+}
 @property (weak, nonatomic) IBOutlet UIWebView *myWebView;
 @property (nonatomic,assign) int selectNum;
 @property (nonatomic,assign) NSString *toURL;

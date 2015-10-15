@@ -11,6 +11,7 @@
 		A412FBF41BC3606600387870 /* BookMarkData.m in Sources */ = {isa = PBXBuildFile; fileRef = A412FBF31BC3606500387870 /* BookMarkData.m */; };
 		A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A41375321BBF912100D0CA14 /* RightSlideMenuView.m */; };
 		A464E5C81BBD6D4300B30045 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A464E5C71BBD6D4300B30045 /* DetailViewController.m */; };
+		A48FBA171BCF44D900ADF951 /* iphoneアプリ2.png in Resources */ = {isa = PBXBuildFile; fileRef = A48FBA161BCF44D900ADF951 /* iphoneアプリ2.png */; };
 		A4A7BF711BBAF20A001DAEA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF701BBAF20A001DAEA3 /* main.m */; };
 		A4A7BF741BBAF20A001DAEA3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF731BBAF20A001DAEA3 /* AppDelegate.m */; };
 		A4A7BF771BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4A7BF751BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld */; };
@@ -50,6 +51,7 @@
 		A41375321BBF912100D0CA14 /* RightSlideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RightSlideMenuView.m; path = ../RightSlideMenuView.m; sourceTree = "<group>"; };
 		A464E5C61BBD6D4300B30045 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		A464E5C71BBD6D4300B30045 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		A48FBA161BCF44D900ADF951 /* iphoneアプリ2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneアプリ2.png"; sourceTree = "<group>"; };
 		A4A7BF6B1BBAF20A001DAEA3 /* TextComparitionCustomCell2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextComparitionCustomCell2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A7BF6F1BBAF20A001DAEA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4A7BF701BBAF20A001DAEA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		A4A7BF6E1BBAF20A001DAEA3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A48FBA161BCF44D900ADF951 /* iphoneアプリ2.png */,
 				A4C757FA1BCE02DF004F46F3 /* Icon-60@3x.png */,
 				A4C757F61BCE0018004F46F3 /* Entypo_27a6(0)_128.png */,
 				A4C757F71BCE0018004F46F3 /* Entypo_2665(1)_128.png */,
@@ -286,6 +289,7 @@
 				A4A7BF981BBAF39E001DAEA3 /* CustomCellView.xib in Resources */,
 				A4C757FB1BCE02DF004F46F3 /* Icon-60@3x.png in Resources */,
 				A4C757F91BCE0018004F46F3 /* Entypo_2665(1)_128.png in Resources */,
+				A48FBA171BCF44D900ADF951 /* iphoneアプリ2.png in Resources */,
 				A4A7BF821BBAF20A001DAEA3 /* LaunchScreen.xib in Resources */,
 				A4A7BF7F1BBAF20A001DAEA3 /* Images.xcassets in Resources */,
 			);
