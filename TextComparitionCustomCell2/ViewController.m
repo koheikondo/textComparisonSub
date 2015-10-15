@@ -517,14 +517,32 @@
         [rakuDic setObject:rakuDic1[@"Item"][@"affiliateUrl"] forKey:@"URL"];
         //そもそもkeyがないときはnilが入る。
         
+//        NSArray *rakuArraySub =rakuDic1[@"Item"][@"mediumImageUrls"];
+//        NSDictionary *rakuDicSub=rakuArraySub[0];
+//        BOOL is_existsRaku = [rakuDicSub.allKeys containsObject:@"imageUrl"];
+//    //    NSString *x = rakuDic1[@"Item"][@"imageFlag"];
         
+        NSString *is_existsRaku =rakuDic1[@"Item"][@"imageFlag"];
+        int x = is_existsRaku.intValue;
+        if(x!=0){
         NSArray *myArray= rakuDic1[@"Item"][@"mediumImageUrls"];
-        NSDictionary *myArraysub =myArray[0];
-        NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+             NSDictionary *myArraysub =myArray[0];
+             NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+            [rakuDic setObject:rakuImage forKey:@"image"];
+        }else{
+//        NSArray *myArray =@[@""];
+//             NSDictionary *myArraysub =myArray[0];
+//            NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+            NSString *rakuImage =@"";
+            
+            [rakuDic setObject:rakuImage forKey:@"image"];
+        }
+       
         
         
         
-        [rakuDic setObject:rakuImage forKey:@"image"];
+        
+        
         [rakuDic setObject:rakuDic1[@"Item"][@"itemName"] forKey:@"title"];
         //楽天のものはlong型で入っているため、int型にキャストする。→そうしないとソートできない。
        
