@@ -40,6 +40,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //広告を表示
+    [self bannerstart];
+    
     //楽天の商標登録画像の表示。
     NSString * path=[[NSBundle mainBundle]pathForResource:@"rakuten" ofType:@"html"];
     NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]];
@@ -87,8 +90,7 @@
     _productName=@"";
     [self serchProduct];
     
-    //広告を表示
-    [self bannerstart];
+   
     
     
     //カスタムセルを設定
@@ -266,7 +268,7 @@
     
     //シェア機能
     NSString *text= @"本や教科書を安く買える!！";
-    NSURL*url= [NSURL URLWithString:@"http://google.com"];
+   // NSURL*url= [NSURL URLWithString:@"http://google.com"];
     UIImage *image=[UIImage imageNamed:@"Icon-60@3x.png"];
     
     NSArray *activityItems = @[text,image];
@@ -445,9 +447,9 @@
         [amaDic setObject:amaDic1[@"DetailPageURL"][@"text"] forKey:@"URL"];
         
         //そもそもkeyがないときはnilが入る。
-        BOOL is_exists0 = [amaDic1.allKeys containsObject:@"SmallImage"];
+        BOOL is_exists0 = [amaDic1.allKeys containsObject:@"MediumImage"];
         if(is_exists0){
-            [amaDic setObject:amaDic1[@"SmallImage"][@"URL"][@"text"] forKey:@"image"];
+            [amaDic setObject:amaDic1[@"MediumImage"][@"URL"][@"text"] forKey:@"image"];
         }else{
             [amaDic setObject:@"" forKey:@"image"];
         }
