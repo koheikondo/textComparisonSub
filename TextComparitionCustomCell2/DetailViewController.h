@@ -15,5 +15,5 @@
 }
 @property (weak, nonatomic) IBOutlet UIWebView *myWebView;
 @property (nonatomic,assign) int selectNum;
-@property (nonatomic,assign) NSString *toURL;
+@property (strong,nonatomic) NSString *toURL;
 @end

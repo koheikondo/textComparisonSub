@@ -30,6 +30,8 @@
     NSMutableArray *_amazonCollect;
     NSMutableArray *_rakutenCollect;
     NSMutableArray *_totalCollect;
+    
+
 }
 
 
@@ -39,6 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     //広告を表示
     [self bannerstart];
@@ -187,9 +190,10 @@
 //セルが押された時の処理
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView.tag==1){
-    DetailViewController*dvc=[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
+      DetailViewController*dvc =[self.storyboard instantiateViewControllerWithIdentifier:@"DetailViewController"];
    
     //TODO:URL後で変更
+    
     dvc.toURL=[NSString stringWithFormat:@"%@",_totalCollect[indexPath.row][@"URL"]];
     
     

@@ -7,7 +7,7 @@
 //
 
 #import "DetailViewController.h"
-
+#import "ViewController.h"
 @interface DetailViewController ()
 
 @end
@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%@",self.toURL);
+    NSLog(@"VIEWURL=%@",self.toURL);
     NSURL *myURL =[NSURL URLWithString:self.toURL];
     NSURLRequest *myURLReq =[NSURLRequest requestWithURL:myURL];
     [self.myWebView loadRequest:myURLReq];
