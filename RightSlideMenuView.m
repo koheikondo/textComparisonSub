@@ -17,7 +17,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.frame = CGRectMake( [UIScreen mainScreen].bounds.size.width, 0, 160, 568);
+        self.frame = CGRectMake( [UIScreen mainScreen].bounds.size.width, 0, 160, 700);
         //self.frame = CGRectMake( 0, 0, 160, 568);
         self.backgroundColor = [UIColor blueColor];
      
