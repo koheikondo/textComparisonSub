@@ -16,6 +16,7 @@
 #include <CommonCrypto/CommonDigest.h>
 #include <CommonCrypto/CommonHMAC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "Reachability.h"
 
 @interface ViewController (){
     NSArray *_rakuList;
@@ -31,7 +32,9 @@
     NSMutableArray *_rakutenCollect;
     NSMutableArray *_totalCollect;
     
-
+    //ネットワーク接続を確認するための変数。
+    Reachability *_curReach;
+    NetworkStatus _netStatus;
 }
 
 
@@ -42,65 +45,77 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _curReach = [Reachability reachabilityForInternetConnection];
+    _netStatus= [_curReach currentReachabilityStatus];
     
-    //広告を表示
-    [self bannerstart];
+  
+        
+        
+        
+        
+        //広告を表示
+        [self bannerstart];
+        
+        //楽天の商標登録画像の表示。
+        NSString * path=[[NSBundle mainBundle]pathForResource:@"rakuten" ofType:@"html"];
+        NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]];
+        [self.myRakutenWebVIew loadRequest:request];
+        
+        
+        //Bookmarkの方のflg
+        _flg=NO;
+        
+        self.myTableVIew.dataSource=self;
+        self.myTableVIew.delegate=self;
+        self.myTableVIew.tag = 1;
+        
+        //coredataの準備
+        AppDelegate *appDelegate =(AppDelegate*)[[UIApplication sharedApplication]delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        
+        self.managedObjectContext=context;
+        //配列にcoredataの中身を追加
+        NSFetchRequest *fetchRequest =[[NSFetchRequest alloc]initWithEntityName:@"BookMarkData"];
+        
+        NSArray *array =[self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        _bookMarkArray =[array mutableCopy];
+        
+        //navigationControllerの名前
+        self.title=@"安い順にでるよ！";
+        //navigationControllerの右側の設定
+        //  self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
+        
+        self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(rightBookMark)];
+        
+        bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
+        bookMarktable.delegate = self;
+        bookMarktable.dataSource = self;
+        bookMarktable.tag = 2;
+        
+        _sideMenuView = (RightSlideMenuView *)bookMarktable;
+        
+        bookMarktable.backgroundColor = [UIColor lightGrayColor];
+        
+        [self.view addSubview:_sideMenuView];
+        
+        
+        //初期画面は何も表示しないため、空白を入れ検索させている。
+    if(_netStatus ==NotReachable){
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"お知らせ" message:@"ネットワークに接続して下さい" delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+        [alert show];
+    }else{
+        _productName=@"";
+        [self serchProduct];
+    }
     
-    //楽天の商標登録画像の表示。
-    NSString * path=[[NSBundle mainBundle]pathForResource:@"rakuten" ofType:@"html"];
-    NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]];
-    [self.myRakutenWebVIew loadRequest:request];
+        
+        
+        //カスタムセルを設定
+        UINib *nib=[UINib nibWithNibName:@"CustomCellView" bundle:nil];
+        
+        //テーブルにカスタムセルを設置
+        [self.myTableVIew registerNib:nib forCellReuseIdentifier:@"Cell"];
     
-    
-    //Bookmarkの方のflg
-    _flg=NO;
-    
-    self.myTableVIew.dataSource=self;
-    self.myTableVIew.delegate=self;
-    self.myTableVIew.tag = 1;
-    
-    //coredataの準備
-    AppDelegate *appDelegate =(AppDelegate*)[[UIApplication sharedApplication]delegate];
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    
-    self.managedObjectContext=context;
-    //配列にcoredataの中身を追加
-    NSFetchRequest *fetchRequest =[[NSFetchRequest alloc]initWithEntityName:@"BookMarkData"];
-    
-    NSArray *array =[self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    _bookMarkArray =[array mutableCopy];
-    
-    //navigationControllerの名前
-    self.title=@"安い順にでるよ！";
-    //navigationControllerの右側の設定
-  //  self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"bookMark一覧" style:UIBarButtonItemStyleDone target:self action:@selector(rightBookMark)];
-    
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(rightBookMark)];
-    
-    bookMarktable =(UITableView *)[[RightSlideMenuView alloc]initWithFrame:self.view.frame];;
-    bookMarktable.delegate = self;
-    bookMarktable.dataSource = self;
-    bookMarktable.tag = 2;
-    
-    _sideMenuView = (RightSlideMenuView *)bookMarktable;
-    
-    bookMarktable.backgroundColor = [UIColor lightGrayColor];
-    
-    [self.view addSubview:_sideMenuView];
-    
-    
-   //初期画面は何も表示しないため、空白を入れ検索させている。
-    _productName=@"";
-    [self serchProduct];
-    
-   
-    
-    
-    //カスタムセルを設定
-    UINib *nib=[UINib nibWithNibName:@"CustomCellView" bundle:nil];
-    
-    //テーブルにカスタムセルを設置
-    [self.myTableVIew registerNib:nib forCellReuseIdentifier:@"Cell"];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -200,7 +215,6 @@
     [[self navigationController]pushViewController:dvc animated:YES];
     }else{
         
-        //ワンテンポ遅れるブックマークバー
         //bookmarkの中身を書く
         BookMarkData *bookmarkdata = _bookMarkArray[indexPath.row];
         _productName =[NSString stringWithFormat:@"%@",bookmarkdata.title];
@@ -257,15 +271,23 @@
 
 //検索した時の処理
 - (IBAction)textInputEnd:(id)sender {
-    _productName =[NSString stringWithFormat:@"%@",self.inputTextField.text];
-   // NSString *name=[NSString stringWithFormat:@"%@",self.inputTextField.text];
-    
-    //urlからJSONデータを取得。配列に入れる。
-    [self serchProduct];
-    
-    //テーブルビューをリロード
-  //  [self.myTableVIew reloadData];
-    NSLog(@"リロード完了");
+    //ネットワークにつながっているか確認
+    _curReach = [Reachability reachabilityForInternetConnection];
+    _netStatus= [_curReach currentReachabilityStatus];
+    if(_netStatus ==NotReachable){
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"お知らせ" message:@"ネットワークに接続して下さい" delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+        [alert show];
+    }else{
+        _productName =[NSString stringWithFormat:@"%@",self.inputTextField.text];
+        // NSString *name=[NSString stringWithFormat:@"%@",self.inputTextField.text];
+        
+        //urlからJSONデータを取得。配列に入れる。
+        [self serchProduct];
+        
+        //テーブルビューをリロード
+        //  [self.myTableVIew reloadData];
+        NSLog(@"リロード完了");
+    }
 }
 
 - (IBAction)shareBtn:(id)sender {
@@ -284,314 +306,324 @@
 
 //検索文字を検索する。webからAPIを引っ張ってきて、配列に入れている。
 -(void)serchProduct{
-    [SVProgressHUD show];
-    if ([_productName isEqual:@""]) {
-        self.myRakutenWebVIew.alpha=1;
+    //ネットがつながっているか確認
+    _curReach = [Reachability reachabilityForInternetConnection];
+    _netStatus= [_curReach currentReachabilityStatus];
+    if(_netStatus ==NotReachable){
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"お知らせ" message:@"ネットワークに接続して下さい" delegate:self cancelButtonTitle:nil otherButtonTitles:@"ok", nil];
+        [alert show];
     }else{
-    self.myRakutenWebVIew.alpha=0;
-    }
-    
-    // 非同期処理 (dispatch)
-    dispatch_queue_t global_q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); // 裏側で処理を動かすキューを作成
-    //大文字で全て書かれているものは定数で書かれている可能性が非常に高い。↑
-    dispatch_queue_t mail_q = dispatch_get_main_queue(); // globalなキューが終了した際に呼ばれるキューを作成　←C言語（C言語）　おそらくオブジェクトCでは準備されてないためC言語を使っているnot自作メソッド
-    
-    //非同期処理をこれからしますよ
-    //^{}ブロック構文
-    dispatch_async(global_q, ^{
-        // 重たい処理をさせる
-        // apiを叩く処理 → 時間のかかる重たい処理
-    
-    NSString *encodeName = [_productName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
-    
-    NSMutableString *myString=[NSMutableString stringWithFormat:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@",encodeName];
-    
-    [myString appendString:@"&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
-    //文字列に%が入っているため2つに分けて文字列を生成する必要がある。
-    
-    // NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
-    
-    NSURL *rakuMyURL =[NSURL URLWithString:myString];
-    
-    //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
-    
-    
-    NSURLRequest *rakuMyURLReq=[NSURLRequest requestWithURL:rakuMyURL];
-    
-    //↓onnectionで通信開始。
-    NSData *rakuJson_data=[NSURLConnection sendSynchronousRequest:rakuMyURLReq returningResponse:nil error:nil];
-    NSError *rakuerror=nil;
-    NSDictionary* rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
-    //&をつけると参照形式になり、その変数は引数にもなり、戻り値にもなる。
-    _rakuList=rakujsonObject[@"Items"];
-    
-    
-    
-    
-    
-    //AmazonAPIスタート
-    
-    NSMutableString *myStringOfHash=[NSMutableString stringWithString:@"GET\nwebservices.amazon.co.jp\n/onca/xml\n"];
-    
-    NSMutableString *myString1=[NSMutableString stringWithFormat:@"http://webservices.amazon.co.jp/onca/xml?"];
-    //http://webservices.amazon.com/onca/xml?
-    
-    
-    NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encodeName];
-    
-    
-    //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Sort=price&Timestamp=";
-    //カテゴリ指定しないバージョン
-      NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
-    
-    
-    //カテゴリ指定するバージョン
-    //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
-    //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
-    [myString2 appendString:myString2_1];
-    
-    NSLog(@"%@",myString2);
-    
-    NSString *myString3=@"&Version=2013-08-01";
-    NSString *myString4=@"&Signature=";
-    
-    //今日の日付を取得
-    NSDate *now =[NSDate date];
-    NSLog(@"現在時刻%@",now);
-    //指定した書式で日付を文字列に変換する。
-    NSDateFormatter *dateFormatter =[[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    // 日付を yyyy/MM/dd hh:mm:ss形式に変更
-    NSString *dateString = [dateFormatter stringFromDate:now];
-    NSLog(@"%@", dateString);
-    [myString2 appendString:dateString];
-    
-    
-    NSDate *now2 =[NSDate date];
-    NSLog(@"現在時刻%@",now2);
-    //指定した書式で日付を文字列に変換する。
-    NSDateFormatter *dateFormatterM =[[NSDateFormatter alloc]init];
-    [dateFormatterM setDateFormat:@"HH:mm:ss"];
-    
-    // 日付を yyyy/MM/dd hh:mm:ss形式に変更
-    NSString *dateString2 = [dateFormatterM stringFromDate:now2];
-    NSLog(@"%@", dateString2);
-    
-    //追加するときの文字列を作成T~Z形式
-    NSString *dateFinal=[NSString stringWithFormat:@"T%@Z",dateString2];
-    NSLog(@"最終日付%@",dateFinal);
-    
-    //エンコーディング
-    NSString *encodeNameDate = [dateFinal stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
-    
-    [myString2 appendString:encodeNameDate];
-    [myString2 appendString:myString3];
-    [myStringOfHash appendString:myString2];
-    
-    
-    //ハッシュタグを取得、#include <CommonCrypto/CommonDigest.h>#include <CommonCrypto/CommonHMAC.h>
-    NSString *key;
-    key=@"XIURsSPrqyImsfeMrhiB7cTCgIopq9uv6wQopvCg";
-    const char *cKey = [key cStringUsingEncoding:NSASCIIStringEncoding];
-    const char *cData = [myStringOfHash cStringUsingEncoding:NSASCIIStringEncoding];
-    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
-    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    NSString *hash = [HMAC base64EncodedStringWithOptions:0];
-    //base64Encoding  base64EncodedStringWithOptions:0
-    
-    NSString *encodeNameDateHash = [hash stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
-    
-    
-    [myString1 appendString:myString2];
-    [myString1 appendString:myString4];
-    [myString1 appendString:encodeNameDateHash];
-    
-    NSURL *amazonMyURL =[NSURL URLWithString:myString1];
-    
-    //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
-    
-    
-    NSURLRequest *amazonMyURLReq=[NSURLRequest requestWithURL:amazonMyURL];
-    
-    //↓onnectionで通信開始。
-    NSData *amazonXML_data=[NSURLConnection sendSynchronousRequest:amazonMyURLReq returningResponse:nil error:nil];
-    
-    NSLog(@"amazonXMLデータは%@",amazonXML_data);
-    
-    //XMLReaderをインストールして、#importする。
-    NSError*amazonError1;
-    NSDictionary*amazonDict= [XMLReader dictionaryForXMLData:amazonXML_data options:XMLReaderOptionsProcessNamespaces  error:&amazonError1];
-    
-    NSError *amazonError;
-    NSData *amazonJsonDate=[NSJSONSerialization dataWithJSONObject:amazonDict options:NSJSONWritingPrettyPrinted error:&amazonError];
-    NSString *amazonJsonString=[[NSString alloc]initWithData:amazonJsonDate encoding:NSUTF8StringEncoding];
-    NSLog(@"%@",amazonJsonString);
-    
-
-    NSLog(@"URL=%@",myString1);
-    NSLog(@"最終日付エンコード後＝%@",encodeNameDate);
-    
-    //new code
-    NSError *amazonError2;
-    NSDictionary* amazonObject=[NSJSONSerialization JSONObjectWithData:amazonJsonDate options:NSJSONReadingAllowFragments  error:&amazonError2];
-    
-    _amazonList=amazonObject[@"ItemSearchResponse"][@"Items"][@"Item"];
-    NSLog(@"%@AmazonArray(^^)",_amazonList);
-    
-   
-    
-    //高速列挙でオリジナル配列にAmazonデータをまとめている。
-    
-    _amazonCollect=[[NSMutableArray alloc]init];
-    for (NSMutableDictionary * amaDic1 in _amazonList) {
-        NSMutableDictionary *amaDic;
-        amaDic=[[NSMutableDictionary alloc]init];
-        [amaDic setObject:amaDic1[@"DetailPageURL"][@"text"] forKey:@"URL"];
         
-        //そもそもkeyがないときはnilが入る。
-        BOOL is_exists0 = [amaDic1.allKeys containsObject:@"MediumImage"];
-        if(is_exists0){
-            [amaDic setObject:amaDic1[@"MediumImage"][@"URL"][@"text"] forKey:@"image"];
+        
+        [SVProgressHUD show];
+        if ([_productName isEqual:@""]) {
+            self.myRakutenWebVIew.alpha=1;
         }else{
-            [amaDic setObject:@"" forKey:@"image"];
+            self.myRakutenWebVIew.alpha=0;
         }
-        [amaDic setObject:amaDic1[@"ItemAttributes"][@"Title"][@"text"] forKey:@"title"];
         
+        // 非同期処理 (dispatch)
+        dispatch_queue_t global_q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); // 裏側で処理を動かすキューを作成
+        //大文字で全て書かれているものは定数で書かれている可能性が非常に高い。↑
+        dispatch_queue_t mail_q = dispatch_get_main_queue(); // globalなキューが終了した際に呼ばれるキューを作成　←C言語（C言語）　おそらくオブジェクトCでは準備されてないためC言語を使っているnot自作メソッド
         
-        BOOL is_exists = [amaDic1.allKeys containsObject:@"OfferSummary"];
-        BOOL is_exists2 = [amaDic1.allKeys containsObject:@"ItemAttributes"];
-
-        if(is_exists){
+        //非同期処理をこれからしますよ
+        //^{}ブロック構文
+        dispatch_async(global_q, ^{
+            // 重たい処理をさせる
+            // apiを叩く処理 → 時間のかかる重たい処理
             
-            NSDictionary *subAmaDic =amaDic1[@"OfferSummary"];
-            BOOL is_exists4 = [subAmaDic.allKeys containsObject:@"LowestUsedPrice"];
-            if(is_exists4){
+            NSString *encodeName = [_productName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
             
-            NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestUsedPrice"][@"Amount"][@"text"];
-            NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
-            [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
-            }else{
-                NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestNewPrice"][@"Amount"][@"text"];
-                NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
-                [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
-            }
-//            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
-        }else if(is_exists2){
-            NSDictionary *subAmaDic =amaDic1[@"ItemAttributes"];
-            BOOL is_exists3 = [subAmaDic.allKeys containsObject:@"ListPrice"];
-            if (is_exists3) {
+            NSMutableString *myString=[NSMutableString stringWithFormat:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@",encodeName];
+            
+            [myString appendString:@"&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+            //文字列に%が入っているため2つに分けて文字列を生成する必要がある。
+            
+            // NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+            
+            NSURL *rakuMyURL =[NSURL URLWithString:myString];
+            
+            //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
+            
+            
+            NSURLRequest *rakuMyURLReq=[NSURLRequest requestWithURL:rakuMyURL];
+            
+            //↓onnectionで通信開始。
+            NSData *rakuJson_data=[NSURLConnection sendSynchronousRequest:rakuMyURLReq returningResponse:nil error:nil];
+            NSError *rakuerror=nil;
+            NSDictionary* rakujsonObject=[NSJSONSerialization JSONObjectWithData:rakuJson_data options:NSJSONReadingAllowFragments  error:&rakuerror];
+            //&をつけると参照形式になり、その変数は引数にもなり、戻り値にもなる。
+            _rakuList=rakujsonObject[@"Items"];
+            
+            
+            
+            
+            
+            //AmazonAPIスタート
+            
+            NSMutableString *myStringOfHash=[NSMutableString stringWithString:@"GET\nwebservices.amazon.co.jp\n/onca/xml\n"];
+            
+            NSMutableString *myString1=[NSMutableString stringWithFormat:@"http://webservices.amazon.co.jp/onca/xml?"];
+            //http://webservices.amazon.com/onca/xml?
+            
+            
+            NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encodeName];
+            
+            
+            //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Sort=price&Timestamp=";
+            //カテゴリ指定しないバージョン
+            NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
+            
+            
+            //カテゴリ指定するバージョン
+            //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
+            //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
+            [myString2 appendString:myString2_1];
+            
+            NSLog(@"%@",myString2);
+            
+            NSString *myString3=@"&Version=2013-08-01";
+            NSString *myString4=@"&Signature=";
+            
+            //今日の日付を取得
+            NSDate *now =[NSDate date];
+            NSLog(@"現在時刻%@",now);
+            //指定した書式で日付を文字列に変換する。
+            NSDateFormatter *dateFormatter =[[NSDateFormatter alloc]init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            
+            // 日付を yyyy/MM/dd hh:mm:ss形式に変更
+            NSString *dateString = [dateFormatter stringFromDate:now];
+            NSLog(@"%@", dateString);
+            [myString2 appendString:dateString];
+            
+            
+            NSDate *now2 =[NSDate date];
+            NSLog(@"現在時刻%@",now2);
+            //指定した書式で日付を文字列に変換する。
+            NSDateFormatter *dateFormatterM =[[NSDateFormatter alloc]init];
+            [dateFormatterM setDateFormat:@"HH:mm:ss"];
+            
+            // 日付を yyyy/MM/dd hh:mm:ss形式に変更
+            NSString *dateString2 = [dateFormatterM stringFromDate:now2];
+            NSLog(@"%@", dateString2);
+            
+            //追加するときの文字列を作成T~Z形式
+            NSString *dateFinal=[NSString stringWithFormat:@"T%@Z",dateString2];
+            NSLog(@"最終日付%@",dateFinal);
+            
+            //エンコーディング
+            NSString *encodeNameDate = [dateFinal stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+            
+            [myString2 appendString:encodeNameDate];
+            [myString2 appendString:myString3];
+            [myStringOfHash appendString:myString2];
+            
+            
+            //ハッシュタグを取得、#include <CommonCrypto/CommonDigest.h>#include <CommonCrypto/CommonHMAC.h>
+            NSString *key;
+            key=@"XIURsSPrqyImsfeMrhiB7cTCgIopq9uv6wQopvCg";
+            const char *cKey = [key cStringUsingEncoding:NSASCIIStringEncoding];
+            const char *cData = [myStringOfHash cStringUsingEncoding:NSASCIIStringEncoding];
+            unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+            CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+            NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+            NSString *hash = [HMAC base64EncodedStringWithOptions:0];
+            //base64Encoding  base64EncodedStringWithOptions:0
+            
+            NSString *encodeNameDateHash = [hash stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
+            
+            
+            [myString1 appendString:myString2];
+            [myString1 appendString:myString4];
+            [myString1 appendString:encodeNameDateHash];
+            
+            NSURL *amazonMyURL =[NSURL URLWithString:myString1];
+            
+            //c%E8%A8%80%E8%AA%9Eが検索文字の場所今回の場合は「C言語」という単語を16進文字コードに変換している。
+            
+            
+            NSURLRequest *amazonMyURLReq=[NSURLRequest requestWithURL:amazonMyURL];
+            
+            //↓onnectionで通信開始。
+            NSData *amazonXML_data=[NSURLConnection sendSynchronousRequest:amazonMyURLReq returningResponse:nil error:nil];
+            
+            NSLog(@"amazonXMLデータは%@",amazonXML_data);
+            
+            //XMLReaderをインストールして、#importする。
+            NSError*amazonError1;
+            NSDictionary*amazonDict= [XMLReader dictionaryForXMLData:amazonXML_data options:XMLReaderOptionsProcessNamespaces  error:&amazonError1];
+            
+            NSError *amazonError;
+            NSData *amazonJsonDate=[NSJSONSerialization dataWithJSONObject:amazonDict options:NSJSONWritingPrettyPrinted error:&amazonError];
+            NSString *amazonJsonString=[[NSString alloc]initWithData:amazonJsonDate encoding:NSUTF8StringEncoding];
+            NSLog(@"%@",amazonJsonString);
+            
+            
+            NSLog(@"URL=%@",myString1);
+            NSLog(@"最終日付エンコード後＝%@",encodeNameDate);
+            
+            //new code
+            NSError *amazonError2;
+            NSDictionary* amazonObject=[NSJSONSerialization JSONObjectWithData:amazonJsonDate options:NSJSONReadingAllowFragments  error:&amazonError2];
+            
+            _amazonList=amazonObject[@"ItemSearchResponse"][@"Items"][@"Item"];
+            NSLog(@"%@AmazonArray(^^)",_amazonList);
+            
+            
+            
+            //高速列挙でオリジナル配列にAmazonデータをまとめている。
+            
+            _amazonCollect=[[NSMutableArray alloc]init];
+            for (NSMutableDictionary * amaDic1 in _amazonList) {
+                NSMutableDictionary *amaDic;
+                amaDic=[[NSMutableDictionary alloc]init];
+                [amaDic setObject:amaDic1[@"DetailPageURL"][@"text"] forKey:@"URL"];
                 
-                NSString *amaMozi =amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] ;
-                NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
-                [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+                //そもそもkeyがないときはnilが入る。
+                BOOL is_exists0 = [amaDic1.allKeys containsObject:@"MediumImage"];
+                if(is_exists0){
+                    [amaDic setObject:amaDic1[@"MediumImage"][@"URL"][@"text"] forKey:@"image"];
+                }else{
+                    [amaDic setObject:@"" forKey:@"image"];
+                }
+                [amaDic setObject:amaDic1[@"ItemAttributes"][@"Title"][@"text"] forKey:@"title"];
                 
-  //              [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
+                
+                BOOL is_exists = [amaDic1.allKeys containsObject:@"OfferSummary"];
+                BOOL is_exists2 = [amaDic1.allKeys containsObject:@"ItemAttributes"];
+                
+                if(is_exists){
+                    
+                    NSDictionary *subAmaDic =amaDic1[@"OfferSummary"];
+                    BOOL is_exists4 = [subAmaDic.allKeys containsObject:@"LowestUsedPrice"];
+                    if(is_exists4){
+                        
+                        NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestUsedPrice"][@"Amount"][@"text"];
+                        NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+                        [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+                    }else{
+                        NSString *amaMozi =amaDic1[@"OfferSummary"][@"LowestNewPrice"][@"Amount"][@"text"];
+                        NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+                        [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+                    }
+                    //            [amaDic setObject:amaDic1[@"OfferSummary"][@"LowestUsedPrice"] [@"Amount"][@"text"]forKey:@"usedPrice"];
+                }else if(is_exists2){
+                    NSDictionary *subAmaDic =amaDic1[@"ItemAttributes"];
+                    BOOL is_exists3 = [subAmaDic.allKeys containsObject:@"ListPrice"];
+                    if (is_exists3) {
+                        
+                        NSString *amaMozi =amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] ;
+                        NSNumber *amaPriceMozi =[NSNumber numberWithInt:amaMozi.intValue];
+                        [amaDic setObject:amaPriceMozi forKey:@"usedPrice"];
+                        
+                        //              [amaDic setObject:amaDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"usedPrice"];
+                    }
+                    
+                    [amaDic setObject:@999999 forKey:@"usedPrice"];
+                }else{
+                    [amaDic setObject:@999999 forKey:@"usedPrice"];
+                }
+                
+                
+                
+                [amaDic setObject:@"amazon" forKey:@"judge"];
+                
+                
+                //値段が書いていないものを除外する処理。
+                
+                NSString *amaCompare =amaDic[@"usedPrice"];
+                int amaCompareInt = amaCompare.intValue;
+                if(amaCompareInt<999999){
+                    [_amazonCollect addObject:amaDic];
+                }
             }
             
-            [amaDic setObject:@999999 forKey:@"usedPrice"];
-        }else{
-            [amaDic setObject:@999999 forKey:@"usedPrice"];
-        }
-        
-        
-        
-        [amaDic setObject:@"amazon" forKey:@"judge"];
-        
-        
-        //値段が書いていないものを除外する処理。
-        
-        NSString *amaCompare =amaDic[@"usedPrice"];
-        int amaCompareInt = amaCompare.intValue;
-        if(amaCompareInt<999999){
-        [_amazonCollect addObject:amaDic];
-        }
-    }
-    
-    
-    
-    NSLog(@"%@Amazonのほしい情報だけとったやつ",_amazonCollect);
-    
-    
-    
-    //高速列挙でオリジナル配列に楽天データをまとめている。
-    
-   _rakutenCollect=[[NSMutableArray alloc]init];
-    for (NSMutableDictionary * rakuDic1 in _rakuList) {
-        NSMutableDictionary *rakuDic;
-        rakuDic=[[NSMutableDictionary alloc]init];
-        
-        //_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]
-        [rakuDic setObject:rakuDic1[@"Item"][@"affiliateUrl"] forKey:@"URL"];
-        //そもそもkeyがないときはnilが入る。
-        
-//        NSArray *rakuArraySub =rakuDic1[@"Item"][@"mediumImageUrls"];
-//        NSDictionary *rakuDicSub=rakuArraySub[0];
-//        BOOL is_existsRaku = [rakuDicSub.allKeys containsObject:@"imageUrl"];
-//    //    NSString *x = rakuDic1[@"Item"][@"imageFlag"];
-        
-        NSString *is_existsRaku =rakuDic1[@"Item"][@"imageFlag"];
-        int x = is_existsRaku.intValue;
-        if(x!=0){
-        NSArray *myArray= rakuDic1[@"Item"][@"mediumImageUrls"];
-             NSDictionary *myArraysub =myArray[0];
-             NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
-            [rakuDic setObject:rakuImage forKey:@"image"];
-        }else{
-//        NSArray *myArray =@[@""];
-//             NSDictionary *myArraysub =myArray[0];
-//            NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
-            NSString *rakuImage =@"";
             
-            [rakuDic setObject:rakuImage forKey:@"image"];
-        }
-       
-        
-        
-        
-        
-        
-        [rakuDic setObject:rakuDic1[@"Item"][@"itemName"] forKey:@"title"];
-        //楽天のものはlong型で入っているため、int型にキャストする。→そうしないとソートできない。
-       
-        
-        NSString *rakuMozi =rakuDic1[@"Item"][@"itemPrice"];
-        NSNumber* rakuPriceMozi =[NSNumber numberWithInt:rakuMozi.intValue];
-       [rakuDic setObject:rakuPriceMozi forKey:@"usedPrice"];
-//        [rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
-     //   [rakuDic setObject:[NSString stringWithFormat:@"%@",rakuDic1[@"Item"][@"itemPrice"]]forKey:@"usedPrice"];
-        
-        [rakuDic setObject:@"楽天" forKey:@"judge"];
-        [_rakutenCollect addObject:rakuDic];
-    }
-    
-    NSLog(@"%@楽天の欲しいタグだけとったやつ。",_rakutenCollect);
-    
-//    NSArray *amaArraySub=[_amazonCollect copy];
-//    NSArray *rakuArraySUb=[_rakutenCollect copy];
-    NSArray *subTotal = [_amazonCollect arrayByAddingObjectsFromArray:_rakutenCollect];
-    
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"usedPrice" ascending:YES];
-    // 配列に入れておいて
-    NSArray *sortarray = [NSArray arrayWithObject:sortDescriptor];
-    // ソートしちゃる！
-    
-    //TODO:ここで問題が起きる他ものは基本的におｋだった。
-   NSArray *subTotal2  = [subTotal sortedArrayUsingDescriptors:sortarray];
-    
-    
-    _totalCollect=[subTotal2 copy];
-    
-    NSLog(@"%@ソートし終わったやつ！！",_totalCollect);
-        
-        dispatch_async(mail_q, ^{
-            // globalの処理が終わった際にやりたい処理
-            [self.myTableVIew reloadData];
-            [SVProgressHUD dismiss];//くるくる回っているのを消す。
+            
+            NSLog(@"%@Amazonのほしい情報だけとったやつ",_amazonCollect);
+            
+            
+            
+            //高速列挙でオリジナル配列に楽天データをまとめている。
+            
+            _rakutenCollect=[[NSMutableArray alloc]init];
+            for (NSMutableDictionary * rakuDic1 in _rakuList) {
+                NSMutableDictionary *rakuDic;
+                rakuDic=[[NSMutableDictionary alloc]init];
+                
+                //_rakuList[indexPath.row][@"Item"][@"affiliateUrl"]
+                [rakuDic setObject:rakuDic1[@"Item"][@"affiliateUrl"] forKey:@"URL"];
+                //そもそもkeyがないときはnilが入る。
+                
+                //        NSArray *rakuArraySub =rakuDic1[@"Item"][@"mediumImageUrls"];
+                //        NSDictionary *rakuDicSub=rakuArraySub[0];
+                //        BOOL is_existsRaku = [rakuDicSub.allKeys containsObject:@"imageUrl"];
+                //    //    NSString *x = rakuDic1[@"Item"][@"imageFlag"];
+                
+                NSString *is_existsRaku =rakuDic1[@"Item"][@"imageFlag"];
+                int x = is_existsRaku.intValue;
+                if(x!=0){
+                    NSArray *myArray= rakuDic1[@"Item"][@"mediumImageUrls"];
+                    NSDictionary *myArraysub =myArray[0];
+                    NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+                    [rakuDic setObject:rakuImage forKey:@"image"];
+                }else{
+                    //        NSArray *myArray =@[@""];
+                    //             NSDictionary *myArraysub =myArray[0];
+                    //            NSString *rakuImage =[NSString stringWithFormat:@"%@",myArraysub[@"imageUrl"]];
+                    NSString *rakuImage =@"";
+                    
+                    [rakuDic setObject:rakuImage forKey:@"image"];
+                }
+                
+                
+                
+                
+                
+                
+                [rakuDic setObject:rakuDic1[@"Item"][@"itemName"] forKey:@"title"];
+                //楽天のものはlong型で入っているため、int型にキャストする。→そうしないとソートできない。
+                
+                
+                NSString *rakuMozi =rakuDic1[@"Item"][@"itemPrice"];
+                NSNumber* rakuPriceMozi =[NSNumber numberWithInt:rakuMozi.intValue];
+                [rakuDic setObject:rakuPriceMozi forKey:@"usedPrice"];
+                //        [rakuDic setObject:rakuDic1[@"ItemAttributes"][@"ListPrice"][@"Amount"][@"text"] forKey:@"newPrice"];
+                //   [rakuDic setObject:[NSString stringWithFormat:@"%@",rakuDic1[@"Item"][@"itemPrice"]]forKey:@"usedPrice"];
+                
+                [rakuDic setObject:@"楽天" forKey:@"judge"];
+                [_rakutenCollect addObject:rakuDic];
+            }
+            
+            NSLog(@"%@楽天の欲しいタグだけとったやつ。",_rakutenCollect);
+            
+            //    NSArray *amaArraySub=[_amazonCollect copy];
+            //    NSArray *rakuArraySUb=[_rakutenCollect copy];
+            NSArray *subTotal = [_amazonCollect arrayByAddingObjectsFromArray:_rakutenCollect];
+            
+            
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"usedPrice" ascending:YES];
+            // 配列に入れておいて
+            NSArray *sortarray = [NSArray arrayWithObject:sortDescriptor];
+            // ソートしちゃる！
+            
+            //TODO:ここで問題が起きる他ものは基本的におｋだった。
+            NSArray *subTotal2  = [subTotal sortedArrayUsingDescriptors:sortarray];
+            
+            
+            _totalCollect=[subTotal2 copy];
+            
+            NSLog(@"%@ソートし終わったやつ！！",_totalCollect);
+            
+            dispatch_async(mail_q, ^{
+                // globalの処理が終わった際にやりたい処理
+                [self.myTableVIew reloadData];
+                [SVProgressHUD dismiss];//くるくる回っているのを消す。
             });
         });
+    }
 }
 
 //ブックマークを右側から表示

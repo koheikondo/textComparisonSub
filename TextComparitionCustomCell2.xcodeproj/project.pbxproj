@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		36CC4FA460C653EE554AAC25 /* libPods-TextComparitionCustomCell2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75CB7B970BE19BF3A1351C98 /* libPods-TextComparitionCustomCell2.a */; };
 		A412FBF41BC3606600387870 /* BookMarkData.m in Sources */ = {isa = PBXBuildFile; fileRef = A412FBF31BC3606500387870 /* BookMarkData.m */; };
+		A4135C2E1BF0B60300141BAB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A4135C2D1BF0B60300141BAB /* Reachability.m */; };
 		A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A41375321BBF912100D0CA14 /* RightSlideMenuView.m */; };
 		A464E5C81BBD6D4300B30045 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A464E5C71BBD6D4300B30045 /* DetailViewController.m */; };
 		A48FBA171BCF44D900ADF951 /* iphoneアプリ2.png in Resources */ = {isa = PBXBuildFile; fileRef = A48FBA161BCF44D900ADF951 /* iphoneアプリ2.png */; };
@@ -47,6 +48,8 @@
 		75CB7B970BE19BF3A1351C98 /* libPods-TextComparitionCustomCell2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TextComparitionCustomCell2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A412FBF21BC3606500387870 /* BookMarkData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookMarkData.h; sourceTree = "<group>"; };
 		A412FBF31BC3606500387870 /* BookMarkData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookMarkData.m; sourceTree = "<group>"; };
+		A4135C2C1BF0B60300141BAB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		A4135C2D1BF0B60300141BAB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		A41375311BBF912100D0CA14 /* RightSlideMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RightSlideMenuView.h; path = ../RightSlideMenuView.h; sourceTree = "<group>"; };
 		A41375321BBF912100D0CA14 /* RightSlideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RightSlideMenuView.m; path = ../RightSlideMenuView.m; sourceTree = "<group>"; };
 		A464E5C61BBD6D4300B30045 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 				A4B18CE01BCCAD220003D21D /* rakuten.html */,
 				A464E5C61BBD6D4300B30045 /* DetailViewController.h */,
 				A464E5C71BBD6D4300B30045 /* DetailViewController.m */,
+				A4135C2C1BF0B60300141BAB /* Reachability.h */,
+				A4135C2D1BF0B60300141BAB /* Reachability.m */,
 				A41375311BBF912100D0CA14 /* RightSlideMenuView.h */,
 				A41375321BBF912100D0CA14 /* RightSlideMenuView.m */,
 				A4A7BF7B1BBAF20A001DAEA3 /* Main.storyboard */,
@@ -346,6 +351,7 @@
 				A412FBF41BC3606600387870 /* BookMarkData.m in Sources */,
 				A4A7BF771BBAF20A001DAEA3 /* TextComparitionCustomCell2.xcdatamodeld in Sources */,
 				A4A7BF7A1BBAF20A001DAEA3 /* ViewController.m in Sources */,
+				A4135C2E1BF0B60300141BAB /* Reachability.m in Sources */,
 				A41375331BBF912100D0CA14 /* RightSlideMenuView.m in Sources */,
 				A4A7BF9B1BBAF448001DAEA3 /* CustomCellTableViewCell.m in Sources */,
 				A4A7BF711BBAF20A001DAEA3 /* main.m in Sources */,
