@@ -337,8 +337,9 @@
             
             NSMutableString *myString=[NSMutableString stringWithFormat:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@",encodeName];
             
-            [myString appendString:@"&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
+            [myString appendString:@"&NGKeyword=%E3%80%90%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%80%91&affiliateId=%E3%81%A3%E3%81%A3%E3%81%A3%EF%BD%93&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
             //文字列に%が入っているため2つに分けて文字列を生成する必要がある。
+            //&NGKeyword=%E3%80%90%E9%9B%BB%E5%AD%90%E6%9B%B8%E7%B1%8D%E3%80%91 ←楽天のkoboを除外
             
             // NSURL *rakuMyURL =[NSURL URLWithString:@"https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&keyword=%@&affiliateId=145ec597.8c7b7ba8.145ec598.8682c646&sort=%2BitemPrice&page=1&hits=15&applicationId=1063216542896291664"];
             
@@ -375,6 +376,7 @@
             //カテゴリ指定しないバージョン
             NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=All&Service=AWSECommerceService&Timestamp=";
             
+            //Power=binding%3Anot%20kindle　←　一旦これを追加
             
             //カテゴリ指定するバージョン
             //NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=Medium&SearchIndex=Books&Service=AWSECommerceService&Sort=pricerank&Timestamp=";
@@ -461,7 +463,7 @@
             NSLog(@"%@",amazonJsonString);
             
             
-            NSLog(@"URL=%@",myString1);
+            NSLog(@"amazonURL=%@",myString1);
             NSLog(@"最終日付エンコード後＝%@",encodeNameDate);
             
             //new code
