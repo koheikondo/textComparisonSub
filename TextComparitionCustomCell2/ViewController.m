@@ -369,7 +369,20 @@
             //http://webservices.amazon.com/onca/xml?
             
             
-            NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encodeName];
+            //amazon検索空キンドルを消す処理を追加。
+            NSString *encoNameAma2;
+            NSMutableString *encodeNameAma =[NSMutableString stringWithString:@"%20-kindle"];
+            if([encodeName isEqualToString:@""]){
+                encoNameAma2=@"";
+            }else{
+            encoNameAma2 =[NSString stringWithFormat:@"%@%@",encodeName,encodeNameAma];
+            }
+            //最初空白だったら-kindleのみの情報が入ってしまいおかしなことになるので、空白の時は空白を検索文字として検索させる処理を行った。
+                                      
+                                      
+            NSMutableString *myString2=[NSMutableString stringWithFormat:@"AWSAccessKeyId=AKIAITG265V3E7GIXTIQ&AssociateTag=settanaoto-22&Keywords=%@",encoNameAma2];
+            
+            //↑なにもない時ならencodeNameが入る。
             
             
             //  NSString *myString2_1=@"&Operation=ItemSearch&ResponseGroup=ItemAttributes%2COffers&SearchIndex=All&Service=AWSECommerceService&Sort=price&Timestamp=";
